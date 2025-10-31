@@ -1895,7 +1895,6 @@
             vibrate(20);
             const name = localStorage.getItem('customerName') || 'Cliente';
             const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const totalItems = cart.length;
             
             const totalQuantityFinal = cart.reduce((sum, item) => sum + item.quantity, 0);
             let quoteSubtotal = 0;
@@ -1907,7 +1906,7 @@
             const shipping = calculateShipping(totalQuantityFinal);
             const totalAmount = quoteSubtotal + shipping;
 
-            const message = `Hola Rita Valencia, soy ${name}. Estoy interesado/a en realizar un pedido de ${totalQuantity} productos (${totalItems} diferentes) por un total de ${formatPrice(totalAmount)}. Por favor revisa mi cotización adjunta y confírmame si está disponible. Gracias.`;
+            const message = `Hola Rita Valencia, soy ${name}. Estoy interesado/a en realizar un pedido de ${totalQuantity} productos por un total de ${formatPrice(totalAmount)}. Por favor revisa mi cotización adjunta y confírmame si está disponible. Gracias.`;
             
             // Descargar primero
             downloadQuoteImage();
