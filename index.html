@@ -28,8 +28,8 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://res.cloudinary.com">
     
-    <!-- CDN de html2canvas (versión actualizada para mejor calidad) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- CDN de html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
     
     <style>
         * {
@@ -149,94 +149,95 @@
            ============================================ */
         .floating-cart-btn {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #2C2C2C;
-            color: white;
+            bottom: 16px;
+            left: 12px;
+            right: 12px;
+            padding: 12px 18px;
+            font-size: 0.88rem;
+            border-radius: 24px;
+            gap: 12px;
+            min-width: auto;
+            max-width: none;
+            background: #222222;
+            color: #F7F7F7;
             border: none;
-            padding: 14px 22px;
-            border-radius: 28px;
-            font-size: 0.9rem;
-            font-weight: 500;
             cursor: pointer;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 24px rgba(17, 17, 17, 0.25);
             z-index: 9999;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 14px;
-            transition: all 0.2s ease;
+            justify-content: space-between;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
-            letter-spacing: 0.3px;
-            min-height: 56px;
+            letter-spacing: 0.35px;
         }
 
         .floating-cart-btn:hover {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+            transform: translateY(-3px);
         }
 
         .floating-cart-btn:active {
-            transform: scale(0.96);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(0) scale(0.97);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
         }
 
         .floating-cart-btn.hidden {
-            transform: translateY(100px);
+            transform: translateY(120px);
             opacity: 0;
             pointer-events: none;
         }
 
-        .floating-cart-btn .cart-icon {
-            font-size: 1.3rem;
+        .floating-cart-left {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 6px;
-            opacity: 0.95;
-        }
-
-        .floating-cart-btn .cart-badge {
-            background: white;
-            color: #2C2C2C;
-            border-radius: 50%;
-            min-width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 0 6px;
-        }
-
-        .floating-cart-btn .cart-action-text {
-            font-size: 0.85rem;
-            opacity: 0.9;
-            font-weight: 500;
-            white-space: nowrap;
-            line-height: 1;
-        }
-
-        .floating-cart-info {
-            display: flex;
-            align-items: center;
-            justify-content: center;
             gap: 8px;
         }
 
-        .floating-cart-info::before {
-            content: '•';
-            opacity: 0.5;
-            font-size: 0.8rem;
+        .floating-cart-btn .cart-icon {
+            font-size: 1.3rem;
+            line-height: 1;
+        }
+
+        .floating-cart-btn .cart-badge {
+            background: #F3F3F3;
+            color: #1F1F1F;
+            border-radius: 999px;
+            padding: 3px 8px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            min-width: auto;
+            height: auto;
+        }
+
+        .floating-cart-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            line-height: 1.1;
+        }
+
+        .floating-cart-btn .cart-action-text {
+            font-size: 0.78rem;
+            opacity: 0.8;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.45px;
         }
 
         .floating-cart-btn .cart-total {
-            font-size: 1.05rem;
+            font-size: 0.98rem;
             font-weight: 600;
-            letter-spacing: 0.3px;
-            line-height: 1;
+            letter-spacing: 0.35px;
+        }
+
+        .floating-cart-arrow {
+            font-size: 1.05rem;
+            opacity: 0.35;
+            display: flex;
+            align-items: center;
         }
 
         /* ============================================
@@ -764,8 +765,6 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
         }
 
         .quote-header {
@@ -778,9 +777,6 @@
         .quote-logo {
             height: 60px;
             margin-bottom: 15px;
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
-            image-rendering: high-quality;
         }
 
         .quote-header h2 {
@@ -1001,35 +997,39 @@
 
             .floating-cart-btn {
                 bottom: 16px;
-                right: 16px;
+                left: 12px;
+                right: 12px;
                 padding: 12px 18px;
-                font-size: 0.85rem;
+                font-size: 0.88rem;
                 border-radius: 24px;
                 gap: 12px;
-                min-height: 48px;
+                min-width: auto;
+                max-width: none;
+            }
+
+            .floating-cart-left {
+                gap: 8px;
             }
 
             .floating-cart-btn .cart-icon {
-                font-size: 1.2rem;
-                gap: 5px;
+                font-size: 1.3rem;
             }
 
             .floating-cart-btn .cart-badge {
-                min-width: 22px;
-                height: 22px;
-                font-size: 0.7rem;
+                padding: 3px 8px;
+                font-size: 0.72rem;
             }
 
             .floating-cart-btn .cart-action-text {
-                font-size: 0.8rem;
-            }
-
-            .floating-cart-info {
-                gap: 6px;
+                font-size: 0.78rem;
             }
 
             .floating-cart-btn .cart-total {
-                font-size: 0.95rem;
+                font-size: 0.98rem;
+            }
+
+            .floating-cart-arrow {
+                font-size: 1.05rem;
             }
 
             .cart-full-page {
@@ -1272,13 +1272,15 @@
 
             <!-- Botón flotante para ver carrito -->
             <button id="floatingCartBtn" class="floating-cart-btn hidden" onclick="goToCart()" aria-label="Ver carrito y continuar">
-                <div class="cart-icon">
-                    🛒 <span class="cart-badge" id="floatingCartBadge">0</span>
+                <div class="floating-cart-left">
+                    <span class="cart-icon">🛒</span>
+                    <span class="cart-badge" id="floatingCartBadge">0</span>
                 </div>
-                <div class="cart-action-text">Ver carrito</div>
-                <div class="floating-cart-info">
-                    <div class="cart-total" id="floatingCartTotal">$0</div>
+                <div class="floating-cart-text">
+                    <span class="cart-action-text">Ver carrito</span>
+                    <span class="cart-total" id="floatingCartTotal">$0</span>
                 </div>
+                <div class="floating-cart-arrow">→</div>
             </button>
         </div>
 
@@ -1907,19 +1909,14 @@
             const quotePrintArea = document.getElementById('quotePrintArea');
 
             html2canvas(quotePrintArea, {
-                scale: 3,
+                scale: 2,
                 useCORS: true,
-                allowTaint: true,
                 logging: false,
-                backgroundColor: '#ffffff',
-                windowWidth: quotePrintArea.scrollWidth,
-                windowHeight: quotePrintArea.scrollHeight,
-                imageTimeout: 0,
-                removeContainer: true
+                backgroundColor: '#ffffff'
             }).then(canvas => {
-                const imgData = canvas.toDataURL('image/png', 1.0);
+                const imgData = canvas.toDataURL('image/jpeg', 0.9);
                 const link = document.createElement('a');
-                link.download = 'Cotizacion_MVNatural.png';
+                link.download = 'Cotizacion_MVNatural.jpg';
                 link.href = imgData;
                 link.click();
                 
