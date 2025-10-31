@@ -214,10 +214,23 @@
             letter-spacing: 0.3px;
         }
 
+        .floating-cart-btn .cart-action-text {
+            font-size: 0.8rem;
+            opacity: 0.85;
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
         .floating-cart-info {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
+        }
+
+        .floating-cart-info::before {
+            content: '•';
+            opacity: 0.4;
+            font-size: 0.7rem;
         }
 
         /* ============================================
@@ -981,6 +994,7 @@
                 padding: 10px 16px;
                 font-size: 0.85rem;
                 border-radius: 20px;
+                gap: 8px;
             }
 
             .floating-cart-btn .cart-icon {
@@ -991,6 +1005,10 @@
                 min-width: 20px;
                 height: 20px;
                 font-size: 0.7rem;
+            }
+
+            .floating-cart-btn .cart-action-text {
+                font-size: 0.75rem;
             }
 
             .floating-cart-btn .cart-total {
@@ -1236,10 +1254,11 @@
             </div>
 
             <!-- Botón flotante para ver carrito -->
-            <button id="floatingCartBtn" class="floating-cart-btn hidden" onclick="goToCart()" aria-label="Ver carrito">
+            <button id="floatingCartBtn" class="floating-cart-btn hidden" onclick="goToCart()" aria-label="Ver carrito y continuar">
                 <div class="cart-icon">
                     🛒 <span class="cart-badge" id="floatingCartBadge">0</span>
                 </div>
+                <div class="cart-action-text">Ver carrito</div>
                 <div class="floating-cart-info">
                     <div class="cart-total" id="floatingCartTotal">$0</div>
                 </div>
