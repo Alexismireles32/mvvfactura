@@ -145,93 +145,79 @@
         }
 
         /* ============================================
-           BOTÓN FLOTANTE DEL CARRITO
+           BOTÓN FLOTANTE DEL CARRITO - Minimalista
            ============================================ */
         .floating-cart-btn {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            left: 20px;
-            max-width: 500px;
-            margin: 0 auto;
-            background: linear-gradient(135deg, var(--gold) 0%, var(--light-gold) 100%);
+            background: #2C2C2C;
             color: white;
             border: none;
-            padding: 18px 24px;
-            border-radius: 50px;
-            font-size: 1.05rem;
-            font-weight: 700;
+            padding: 12px 20px;
+            border-radius: 24px;
+            font-size: 0.9rem;
+            font-weight: 500;
             cursor: pointer;
-            box-shadow: 0 8px 24px rgba(184, 134, 11, 0.45), 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
             z-index: 9999;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateY(0);
+            gap: 12px;
+            transition: all 0.2s ease;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            letter-spacing: 0.3px;
+        }
+
+        .floating-cart-btn:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
         }
 
         .floating-cart-btn:active {
-            transform: translateY(-3px) scale(0.98);
-            box-shadow: 0 12px 32px rgba(184, 134, 11, 0.6), 0 6px 12px rgba(0, 0, 0, 0.15);
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .floating-cart-btn.hidden {
-            transform: translateY(120px);
+            transform: translateY(100px);
             opacity: 0;
             pointer-events: none;
         }
 
         .floating-cart-btn .cart-icon {
-            font-size: 1.6rem;
+            font-size: 1.2rem;
             display: flex;
             align-items: center;
-            gap: 10px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            opacity: 0.9;
         }
 
         .floating-cart-btn .cart-badge {
             background: white;
-            color: var(--gold);
+            color: #2C2C2C;
             border-radius: 50%;
-            min-width: 32px;
-            height: 32px;
+            min-width: 22px;
+            height: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
-            font-weight: 800;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-            padding: 0 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-left: -4px;
+            padding: 0 6px;
         }
 
         .floating-cart-btn .cart-total {
-            font-size: 1.2rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-        }
-
-        .floating-cart-btn .cart-label {
-            font-size: 0.75rem;
-            opacity: 0.95;
+            font-size: 1rem;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.3px;
         }
 
         .floating-cart-info {
             display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 3px;
+            align-items: center;
+            gap: 8px;
         }
 
         /* ============================================
@@ -990,29 +976,25 @@
             }
 
             .floating-cart-btn {
-                bottom: 12px;
-                right: 12px;
-                left: 12px;
-                padding: 14px 20px;
-                font-size: 0.95rem;
+                bottom: 16px;
+                right: 16px;
+                padding: 10px 16px;
+                font-size: 0.85rem;
+                border-radius: 20px;
             }
 
             .floating-cart-btn .cart-icon {
-                font-size: 1.4rem;
-            }
-
-            .floating-cart-btn .cart-badge {
-                min-width: 28px;
-                height: 28px;
-                font-size: 0.85rem;
-            }
-
-            .floating-cart-btn .cart-total {
                 font-size: 1.1rem;
             }
 
-            .floating-cart-btn .cart-label {
+            .floating-cart-btn .cart-badge {
+                min-width: 20px;
+                height: 20px;
                 font-size: 0.7rem;
+            }
+
+            .floating-cart-btn .cart-total {
+                font-size: 0.9rem;
             }
 
             .cart-full-page {
@@ -1259,7 +1241,6 @@
                     🛒 <span class="cart-badge" id="floatingCartBadge">0</span>
                 </div>
                 <div class="floating-cart-info">
-                    <div class="cart-label">Ver Carrito</div>
                     <div class="cart-total" id="floatingCartTotal">$0</div>
                 </div>
             </button>
