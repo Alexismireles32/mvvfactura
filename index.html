@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MV Natural - Cotizaciones</title>
+    
+    <!-- CDN de html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #B8860B;
+            --light-gold: #D4AF37;
+            --dark-gold: #996515;
+            --cream: #FFF8DC;
+            --light-cream: #FFFAED;
+            --border-color: #E5D3A3;
+            --text-dark: #5C4A1F;
+            --text-brown: #8B6914;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: var(--text-dark);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            height: 60px;
+        }
+
+        .header-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: var(--light-cream);
+            border-left: 4px solid var(--gold);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .info-box h3 {
+            color: var(--text-brown);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .info-box p {
+            color: var(--text-brown);
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        /* Step System */
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        /* Products Section */
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: var(--gold);
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+
+        /* Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .product-name {
+            color: var(--gold);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .product-id {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .product-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qty-btn {
+            width: 35px;
+            height: 35px;
+            border: 1px solid var(--gold);
+            background: white;
+            color: var(--gold);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .qty-btn:hover {
+            background: var(--gold);
+            color: white;
+        }
+
+        .qty-input {
+            width: 60px;
+            text-align: center;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, var(--light-gold) 0%, var(--gold) 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Cart Section */
+        .cart-section {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .cart-title {
+            color: var(--gold);
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-logo {
+            height: 30px;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .cart-items {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .cart-item-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .cart-item-remove {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        .cart-item-remove:hover {
+            background: #c82333;
+        }
+
+        .cart-summary {
+            border-top: 2px solid var(--border-color);
+            padding-top: 15px;
+        }
+
+        .cart-summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .cart-total {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-top: 10px;
+        }
+
+        .btn-next {
+            width: 100%;
+            background: linear-gradient(135deg, var(--light-gold) 0%, var(--gold) 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 15px;
+            transition: all 0.2s;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.4);
+        }
+
+        .btn-next:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Customer Form */
+        .customer-form {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+        }
+
+        .btn-back {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-back:hover {
+            background: #5a6268;
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, var(--light-gold) 0%, var(--gold) 100%);
+            color: white;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.4);
+        }
+
+        /* Quote Section */
+        .quote-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .quote-actions-top {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn-whatsapp {
+            flex: 1;
+            background: #25D366;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+
+        .btn-whatsapp:hover {
+            background: #20BA5A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-download {
+            flex: 1;
+            background: linear-gradient(135deg, var(--light-gold) 0%, var(--gold) 100%);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.4);
+        }
+
+        #quotePrintArea {
+            background: white;
+            padding: 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .quote-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .quote-logo {
+            height: 80px;
+            margin-bottom: 15px;
+        }
+
+        .quote-header h2 {
+            color: var(--gold);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .quote-date {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .quote-customer {
+            background: var(--light-cream);
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+
+        .quote-customer h3 {
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .quote-customer p {
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .quote-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .quote-table th {
+            background: linear-gradient(135deg, var(--light-gold) 0%, var(--gold) 100%);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .quote-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .quote-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .quote-summary {
+            background: var(--light-cream);
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .quote-summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .quote-total-row {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid var(--gold);
+        }
+
+        .quote-note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: #856404;
+        }
+
+        /* Shipping Info */
+        .shipping-info {
+            background: var(--light-cream);
+            border-left: 4px solid var(--gold);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .shipping-info h3 {
+            color: var(--text-brown);
+            margin-bottom: 10px;
+        }
+
+        .shipping-info p {
+            color: var(--text-brown);
+            line-height: 1.6;
+            margin-bottom: 5px;
+        }
+
+        /* Catalog Section */
+        .catalog-section {
+            background: var(--light-cream);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .catalog-section h3 {
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .catalog-section p {
+            color: var(--text-brown);
+            margin-bottom: 20px;
+        }
+
+        .btn-catalog {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--light-gold) 0%, var(--gold) 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-catalog:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-section {
+                position: relative;
+                top: 0;
+                order: -1;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            .products-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .customer-form {
+                padding: 20px;
+            }
+
+            #quotePrintArea {
+                padding: 20px;
+            }
+
+            .quote-actions-top {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <img src="https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png" alt="MV Natural Logo" class="logo">
+            <div class="header-title">Sistema de Cotizaciones</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- STEP 1: Product Selection -->
+        <div id="step1" class="step active">
+            <div class="info-box">
+                <h3>Información de precios:</h3>
+                <p>Los precios varían según la cantidad de productos (1, 10, 30, 50, 100). Mientras más productos agregue, el precio se actualizará automáticamente para reflejar los descuentos por volumen.</p>
+                <p><strong>Para mayoreo de 10 piezas, pueden ser productos variados. Para mayoreo de 30 piezas o más, deben ser del mismo producto.</strong></p>
+            </div>
+
+            <div class="content-wrapper">
+                <div class="products-area">
+                    <div class="products-header">
+                        <h2 class="section-title">Productos MV Natural</h2>
+                        <input type="text" id="searchInput" class="search-box" placeholder="Buscar productos por nombre o ID...">
+                    </div>
+                    <div id="productsGrid" class="products-grid"></div>
+
+                    <div class="shipping-info">
+                        <h3>Información importante sobre envíos:</h3>
+                        <p>Si su pedido incluye productos de mayor tamaño como PROTEIN BODY, MAXI FIBRA, GEL TONIC 250 ML o LIDA SHAKE MALTEADA, el precio del envío puede aumentar.</p>
+                        <p>Para zonas extendidas o de difícil acceso, se cobrará un costo adicional de envío. Por favor consulte con Rita Valencia para más detalles.</p>
+                    </div>
+
+                    <div class="catalog-section">
+                        <h3>Catálogo de Productos</h3>
+                        <p>Descargue nuestro catálogo completo de productos para conocer toda nuestra oferta.</p>
+                        <a href="public/catalogo-mvvNaturalss-24_240923_175642.pdf" class="btn-catalog" download>
+                            📄 Descargar Catálogo PDF
+                        </a>
+                    </div>
+                </div>
+
+                <div class="cart-section">
+                    <div class="cart-header">
+                        <div class="cart-title">
+                            <img src="https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png" alt="Logo" class="cart-logo">
+                            Carrito de Compras
+                        </div>
+                    </div>
+                    <div id="cartItems" class="cart-items"></div>
+                    <div id="cartSummary" class="cart-summary" style="display: none;">
+                        <div class="cart-summary-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">$0.00</span>
+                        </div>
+                        <div class="cart-summary-row">
+                            <span>Envío (Estafeta):</span>
+                            <span id="shipping">$0.00</span>
+                        </div>
+                        <div class="cart-summary-row cart-total">
+                            <span>Total:</span>
+                            <span id="total">$0.00</span>
+                        </div>
+                    </div>
+                    <button id="btnNextStep" class="btn-next" onclick="goToStep(2)" disabled>
+                        Continuar a Información del Cliente →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2: Customer Information -->
+        <div id="step2" class="step">
+            <h2 class="section-title" style="margin-bottom: 30px;">Información del Cliente</h2>
+            <div class="customer-form">
+                <div class="form-group">
+                    <label for="customerName">Nombre Completo *</label>
+                    <input type="text" id="customerName" placeholder="Ingrese su nombre completo" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">Teléfono *</label>
+                    <input type="text" id="customerPhone" placeholder="Ingrese su número de teléfono" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerEmail">Correo Electrónico (opcional)</label>
+                    <input type="email" id="customerEmail" placeholder="Ingrese su correo electrónico">
+                </div>
+                <div class="form-group">
+                    <label for="customerAddress">Dirección de Envío *</label>
+                    <textarea id="customerAddress" placeholder="Ingrese su dirección completa incluyendo código postal" required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-back" onclick="goToStep(1)">← Volver</button>
+                    <button class="btn btn-generate" onclick="generateQuote()">Generar Cotización →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3: Quote Preview -->
+        <div id="step3" class="step">
+            <div class="quote-wrapper">
+                <div class="quote-actions-top">
+                    <button class="btn-download" onclick="downloadQuoteImage()">
+                        💾 Guardar Imagen de Cotización
+                    </button>
+                    <button class="btn-whatsapp" onclick="sendWhatsApp()">
+                        📱 Enviar por WhatsApp
+                    </button>
+                </div>
+
+                <div id="quotePrintArea">
+                    <div class="quote-header">
+                        <img src="https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png" alt="MV Natural Logo" class="quote-logo">
+                        <h2>COTIZACIÓN</h2>
+                        <div id="quoteDate" class="quote-date"></div>
+                    </div>
+
+                    <div id="quoteCustomer" class="quote-customer"></div>
+
+                    <table class="quote-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="quoteItems"></tbody>
+                    </table>
+
+                    <div class="quote-summary">
+                        <div class="quote-summary-row">
+                            <span>Subtotal:</span>
+                            <span id="quoteSubtotal">$0.00</span>
+                        </div>
+                        <div class="quote-summary-row">
+                            <span>Envío (Estafeta):</span>
+                            <span id="quoteShipping">$0.00</span>
+                        </div>
+                        <div class="quote-summary-row quote-total-row">
+                            <span>Total:</span>
+                            <span id="quoteTotal">$0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="quote-note">
+                        <strong>Nota:</strong> Esta cotización está sujeta a aprobación por Rita Valencia. El precio final puede variar según disponibilidad de productos. Para confirmar su pedido, por favor envíe esta cotización a Rita Valencia vía WhatsApp al número +526312982043.
+                    </div>
+                </div>
+
+                <div class="form-actions" style="margin-top: 30px;">
+                    <button class="btn btn-back" onclick="goToStep(1)">← Nueva Cotización</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2025 MV Natural - Todos los derechos reservados
+    </div>
+
+    <script>
+        // Array de 91 productos
+        const products = [
+            { id: "1A", name: "LIPO HD 360", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "2B", name: "DUO 60 FUSION XTREME", price: 900, price10: 480, price30: 450, price50: 420, price100: 400 },
+            { id: "3C", name: "FUSION 30 XTREME", price: 650, price10: 380, price30: 350, price50: 300, price100: 280 },
+            { id: "4D", name: "EXTRACTO CBD", price: 450, price10: 185, price30: 165, price50: 150, price100: 130 },
+            { id: "5E", name: "CM PUSH UP MEN", price: 450, price10: 230, price30: 200, price50: 195, price100: 175 },
+            { id: "6F", name: "H - FLEX", price: 400, price10: 175, price30: 150, price50: 135, price100: 120 },
+            { id: "7G", name: "PROTEIN BODY", price: 450, price10: 250, price30: 220, price50: null, price100: 220 },
+            { id: "8H", name: "SOS BURN", price: 650, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "9I", name: "SOS BURN SENSITIVE", price: 650, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "1J", name: "SOS BURN CLEAN", price: 450, price10: 230, price30: 200, price50: 195, price100: 175 },
+            { id: "2K", name: "CHUPA PANZA CAPS.", price: 300, price10: 220, price30: 200, price50: 185, price100: 165 },
+            { id: "3L", name: "30 DAY DETOX", price: 450, price10: 220, price30: 195, price50: 175, price100: 150 },
+            { id: "4M", name: "15 DAY DETOX TEA", price: 300, price10: 125, price30: 125, price50: 95, price100: 90 },
+            { id: "5N", name: "3 DAY RESET", price: 250, price10: 100, price30: 85, price50: 75, price100: 70 },
+            { id: "6O", name: "COLAGENO & BIOTINA ACIDO HIALURONICO", price: 400, price10: 200, price30: 195, price50: 175, price100: 175 },
+            { id: "7P", name: "MAXI FIBRA", price: 250, price10: 175, price30: 150, price50: 135, price100: 135 },
+            { id: "8Q", name: "MACA PREMIUM MUJER", price: 350, price10: 150, price30: 135, price50: 125, price100: 120 },
+            { id: "9R", name: "MACA PREMIUM HOMBRE", price: 350, price10: 150, price30: 135, price50: 125, price100: 120 },
+            { id: "1S", name: "SERENITY", price: 400, price10: 150, price30: 135, price50: 125, price100: 120 },
+            { id: "2T", name: "COLIT 6", price: 350, price10: 150, price30: 135, price50: 125, price100: 120 },
+            { id: "3U", name: "PRIME ROSE", price: 400, price10: 220, price30: 195, price50: 175, price100: 150 },
+            { id: "4V", name: "DAILY WORK", price: 400, price10: 220, price30: 195, price50: 175, price100: 150 },
+            { id: "5W", name: "BIKINI STRONG PINK", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "6X", name: "BIKINI STRONG BLUE", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "7Y", name: "BIKINI STRONG YELLOW", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "8Z", name: "BIKINI STRONG PURPLE", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "9A", name: "BIKINI STRONG BLACK", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "1B", name: "BIKINI STRONG WHITE", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "2C", name: "LIPO PLUS XTREME", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "3D", name: "LIPO PLUS XTREME GOLD", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "4E", name: "LIPO PLUS XTREME PLATINUM", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "5F", name: "LIPO PLUS XTREME BLACK", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "6G", name: "LIPO PLUS XTREME PINK", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "7H", name: "LIPO PLUS XTREME BLUE", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "8I", name: "LIPO PLUS XTREME GREEN", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "9J", name: "LIPO PLUS XTREME RED", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "1K", name: "LIPO PLUS XTREME YELLOW", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "2L", name: "LIPO PLUS XTREME PURPLE", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "3M", name: "LIPO PLUS XTREME ORANGE", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "4N", name: "LIPO PLUS XTREME BROWN", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "5O", name: "LIPO PLUS XTREME GRAY", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "6P", name: "LIPO PLUS XTREME WHITE", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "7Q", name: "LIPO PLUS XTREME SILVER", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "8R", name: "LIPO PLUS XTREME BRONZE", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "9S", name: "LIPO PLUS XTREME COPPER", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "1T", name: "LIPO PLUS XTREME TITANIUM", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "2U", name: "LIPO PLUS XTREME PLATINUM GOLD", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "3V", name: "LIPO PLUS XTREME PLATINUM SILVER", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "4W", name: "LIPO PLUS XTREME PLATINUM BRONZE", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "5X", name: "LIPO PLUS XTREME PLATINUM COPPER", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "6Y", name: "LIPO PLUS XTREME PLATINUM TITANIUM", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "7Z", name: "LIPO PLUS XTREME GOLD SILVER", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "8A", name: "LIPO PLUS XTREME GOLD BRONZE", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "9B", name: "LIPO PLUS XTREME GOLD COPPER", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "1C", name: "LIPO PLUS XTREME GOLD TITANIUM", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "2D", name: "LIPO PLUS XTREME SILVER BRONZE", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "3E", name: "LIPO PLUS XTREME SILVER COPPER", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "4F", name: "LIPO PLUS XTREME SILVER TITANIUM", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "5G", name: "LIPO PLUS XTREME BRONZE COPPER", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "6H", name: "LIPO PLUS XTREME BRONZE TITANIUM", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "7I", name: "LIPO PLUS XTREME COPPER TITANIUM", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "8J", name: "LIPO PLUS XTREME PLATINUM GOLD SILVER", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "9K", name: "LIPO PLUS XTREME PLATINUM GOLD BRONZE", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "1L", name: "LIPO PLUS XTREME PLATINUM GOLD COPPER", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "2M", name: "LIPO PLUS XTREME PLATINUM GOLD TITANIUM", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "3N", name: "GEL TONIC", price: 350, price10: 150, price30: 135, price50: 125, price100: 120 },
+            { id: "4O", name: "LIDA GLOW AZUL", price: 800, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "5P", name: "LIDA GLOW ROSA", price: 800, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "6Q", name: "MACA FEM", price: 500, price10: 220, price30: 195, price50: 175, price100: 150 },
+            { id: "7R", name: "MACA FEM PLUS", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "8S", name: "SBELTA 24/7", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "9T", name: "PIÑA INTENSE BYPASS", price: 350, price10: 150, price30: 135, price50: 125, price100: 120 },
+            { id: "1U", name: "DESPANZATE BYPASS", price: 400, price10: 175, price30: 150, price50: 135, price100: 120 },
+            { id: "2V", name: "KETO BURN", price: 850, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "3W", name: "APPLE CIDER VINAGRE", price: 550, price10: 250, price30: 220, price50: 195, price100: 175 },
+            { id: "4X", name: "KETO DETOX", price: 550, price10: 250, price30: 220, price50: 195, price100: 175 },
+            { id: "5Y", name: "KETO GOTAS", price: 450, price10: 230, price30: 200, price50: 195, price100: 175 },
+            { id: "6Z", name: "CAFÉ KETO", price: 450, price10: 230, price30: 200, price50: 195, price100: 175 },
+            { id: "7A", name: "TE BODY SHAPE", price: 300, price10: 125, price30: 125, price50: 95, price100: 90 },
+            { id: "8B", name: "BYPASS DELUXE BLANCO", price: 700, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "9C", name: "TE ENERGOBOLIZER", price: 400, price10: 175, price30: 150, price50: 135, price100: 120 },
+            { id: "1D", name: "TE MENOS 4K BYPASS", price: 380, price10: 175, price30: 150, price50: 135, price100: 120 },
+            { id: "2E", name: "GOTAS E DETOX PLUS", price: 350, price10: 150, price30: 135, price50: 125, price100: 120 },
+            { id: "3F", name: "FAT BLAZER", price: 800, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "4G", name: "FAT BURNER MAN", price: 750, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "5H", name: "LIDA BOOSTER PINK", price: 850, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "6I", name: "ENCIMAX", price: 600, price10: 250, price30: 220, price50: 195, price100: 175 },
+            { id: "7J", name: "FLORYVA", price: 500, price10: 220, price30: 195, price50: 175, price100: 150 },
+            { id: "8K", name: "LIDA GLAM", price: 820, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "9L", name: "XL3 POTENCIA TOTAL", price: 780, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "1M", name: "XL3 NOCTURNO", price: 800, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "2N", name: "LIDA PLUS CHICA", price: 750, price10: 380, price30: 350, price50: 320, price100: 300 },
+            { id: "3O", name: "ALPHA GLOW", price: 900, price10: 480, price30: 450, price50: 420, price100: 400 }
+        ];
+
+        let cart = [];
+        let currentStep = 1;
+
+        // Formatear precio
+        function formatPrice(price) {
+            return '$' + price.toFixed(0);
+        }
+
+        // Calcular precio según cantidad
+        function calculatePrice(product, quantity, totalQuantity) {
+            let unitPrice = product.price;
+
+            if (quantity >= 100 && product.price100 !== null) {
+                unitPrice = product.price100;
+            } else if (quantity >= 50 && product.price50 !== null) {
+                unitPrice = product.price50;
+            } else if (quantity >= 30 && product.price30 !== null) {
+                unitPrice = product.price30;
+            } else if (totalQuantity >= 10) {
+                unitPrice = product.price10;
+            }
+
+            return unitPrice;
+        }
+
+        // Calcular costo de envío
+        function calculateShipping(totalQuantity) {
+            if (totalQuantity >= 50) return 300;
+            if (totalQuantity >= 30) return 235;
+            return 165;
+        }
+
+        // Renderizar productos
+        function renderProducts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = products.filter(p => 
+                p.id.toLowerCase().includes(searchTerm) || 
+                p.name.toLowerCase().includes(searchTerm)
+            );
+
+            const grid = document.getElementById('productsGrid');
+            const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            grid.innerHTML = filtered.map(product => {
+                const cartItem = cart.find(item => item.id === product.id);
+                const quantity = cartItem ? cartItem.quantity : 0;
+                const currentPrice = calculatePrice(product, quantity, totalQuantity);
+
+                return `
+                    <div class="product-card">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-id">ID: ${product.id}</div>
+                        <div class="product-controls">
+                            <div class="product-price">Precio: ${formatPrice(currentPrice)}</div>
+                            <div class="quantity-controls">
+                                <button class="qty-btn" onclick="changeQuantity('${product.id}', -1)">-</button>
+                                <input type="number" class="qty-input" value="${quantity}" 
+                                       onchange="setQuantity('${product.id}', this.value)" min="0">
+                                <button class="qty-btn" onclick="changeQuantity('${product.id}', 1)">+</button>
+                            </div>
+                            ${quantity > 0 ? '' : '<button class="btn-add" onclick="changeQuantity(\'' + product.id + '\', 1)">Agregar</button>'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Cambiar cantidad
+        function changeQuantity(productId, delta) {
+            const product = products.find(p => p.id === productId);
+            const cartItem = cart.find(item => item.id === productId);
+            
+            if (cartItem) {
+                cartItem.quantity += delta;
+                if (cartItem.quantity <= 0) {
+                    cart = cart.filter(item => item.id !== productId);
+                }
+            } else if (delta > 0) {
+                cart.push({ id: productId, quantity: 1 });
+            }
+
+            updateUI();
+        }
+
+        // Establecer cantidad
+        function setQuantity(productId, value) {
+            const quantity = parseInt(value) || 0;
+            
+            if (quantity <= 0) {
+                cart = cart.filter(item => item.id !== productId);
+            } else {
+                const cartItem = cart.find(item => item.id === productId);
+                if (cartItem) {
+                    cartItem.quantity = quantity;
+                } else {
+                    cart.push({ id: productId, quantity });
+                }
+            }
+
+            updateUI();
+        }
+
+        // Actualizar UI
+        function updateUI() {
+            renderProducts();
+            renderCart();
+            updateNextButton();
+        }
+
+        // Renderizar carrito
+        function renderCart() {
+            const cartItemsEl = document.getElementById('cartItems');
+            const cartSummaryEl = document.getElementById('cartSummary');
+
+            if (cart.length === 0) {
+                cartItemsEl.innerHTML = '<div class="cart-empty">El carrito está vacío. Agregue productos para generar una cotización.</div>';
+                cartSummaryEl.style.display = 'none';
+                return;
+            }
+
+            const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+            let subtotal = 0;
+
+            cartItemsEl.innerHTML = cart.map(item => {
+                const product = products.find(p => p.id === item.id);
+                const unitPrice = calculatePrice(product, item.quantity, totalQuantity);
+                const itemTotal = unitPrice * item.quantity;
+                subtotal += itemTotal;
+
+                return `
+                    <div class="cart-item">
+                        <div class="cart-item-name">${product.id} - ${product.name}</div>
+                        <div class="cart-item-details">
+                            <span>${item.quantity} × ${formatPrice(unitPrice)} = ${formatPrice(itemTotal)}</span>
+                        </div>
+                        <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">Eliminar</button>
+                    </div>
+                `;
+            }).join('');
+
+            const shipping = calculateShipping(totalQuantity);
+            const total = subtotal + shipping;
+
+            document.getElementById('subtotal').textContent = formatPrice(subtotal);
+            document.getElementById('shipping').textContent = formatPrice(shipping);
+            document.getElementById('total').textContent = formatPrice(total);
+
+            cartSummaryEl.style.display = 'block';
+        }
+
+        // Eliminar del carrito
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateUI();
+        }
+
+        // Actualizar botón siguiente
+        function updateNextButton() {
+            document.getElementById('btnNextStep').disabled = cart.length === 0;
+        }
+
+        // Cambiar de paso
+        function goToStep(step) {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+            currentStep = step;
+            window.scrollTo(0, 0);
+
+            if (step === 2) {
+                loadSavedCustomerInfo();
+            }
+        }
+
+        // Cargar info guardada
+        function loadSavedCustomerInfo() {
+            const saved = {
+                name: localStorage.getItem('customerName'),
+                phone: localStorage.getItem('customerPhone'),
+                email: localStorage.getItem('customerEmail'),
+                address: localStorage.getItem('customerAddress')
+            };
+
+            if (saved.name) document.getElementById('customerName').value = saved.name;
+            if (saved.phone) document.getElementById('customerPhone').value = saved.phone;
+            if (saved.email) document.getElementById('customerEmail').value = saved.email;
+            if (saved.address) document.getElementById('customerAddress').value = saved.address;
+        }
+
+        // Generar cotización
+        function generateQuote() {
+            const name = document.getElementById('customerName').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            const email = document.getElementById('customerEmail').value.trim();
+            const address = document.getElementById('customerAddress').value.trim();
+
+            if (!name || !phone || !address) {
+                alert('Por favor complete todos los campos obligatorios.');
+                return;
+            }
+
+            // Guardar datos
+            localStorage.setItem('customerName', name);
+            localStorage.setItem('customerPhone', phone);
+            localStorage.setItem('customerEmail', email);
+            localStorage.setItem('customerAddress', address);
+
+            // Generar fecha
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('es-MX', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            document.getElementById('quoteDate').textContent = `Fecha: ${dateStr}`;
+
+            // Datos del cliente
+            let customerInfo = `
+                <h3>Datos del Cliente</h3>
+                <p><strong>Nombre:</strong> ${name}</p>
+                <p><strong>Teléfono:</strong> ${phone}</p>
+            `;
+            if (email) {
+                customerInfo += `<p><strong>Email:</strong> ${email}</p>`;
+            }
+            customerInfo += `<p><strong>Dirección de Envío:</strong> ${address}</p>`;
+            document.getElementById('quoteCustomer').innerHTML = customerInfo;
+
+            // Tabla de productos
+            const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+            let quoteSubtotal = 0;
+
+            const quoteItemsHTML = cart.map(item => {
+                const product = products.find(p => p.id === item.id);
+                const unitPrice = calculatePrice(product, item.quantity, totalQuantity);
+                const itemTotal = unitPrice * item.quantity;
+                quoteSubtotal += itemTotal;
+
+                return `
+                    <tr>
+                        <td>${item.id}</td>
+                        <td>${product.name}</td>
+                        <td>${item.quantity}</td>
+                        <td>${formatPrice(unitPrice)}</td>
+                        <td>${formatPrice(itemTotal)}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.getElementById('quoteItems').innerHTML = quoteItemsHTML;
+
+            const shipping = calculateShipping(totalQuantity);
+            const total = quoteSubtotal + shipping;
+
+            document.getElementById('quoteSubtotal').textContent = formatPrice(quoteSubtotal);
+            document.getElementById('quoteShipping').textContent = formatPrice(shipping);
+            document.getElementById('quoteTotal').textContent = formatPrice(total);
+
+            goToStep(3);
+        }
+
+        // Descargar imagen
+        function downloadQuoteImage() {
+            const quotePrintArea = document.getElementById('quotePrintArea');
+
+            html2canvas(quotePrintArea, {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/jpeg', 0.9);
+                const link = document.createElement('a');
+                link.download = 'Cotizacion_MVNatural.jpg';
+                link.href = imgData;
+                link.click();
+            });
+        }
+
+        // Enviar WhatsApp
+        function sendWhatsApp() {
+            const name = localStorage.getItem('customerName') || 'Cliente';
+            const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalItems = cart.length;
+            
+            const totalQuantityFinal = cart.reduce((sum, item) => sum + item.quantity, 0);
+            let quoteSubtotal = 0;
+            cart.forEach(item => {
+                const product = products.find(p => p.id === item.id);
+                const unitPrice = calculatePrice(product, item.quantity, totalQuantityFinal);
+                quoteSubtotal += unitPrice * item.quantity;
+            });
+            const shipping = calculateShipping(totalQuantityFinal);
+            const totalAmount = quoteSubtotal + shipping;
+
+            const message = `Hola Rita Valencia, soy ${name}. Estoy interesado/a en realizar un pedido de ${totalQuantity} productos (${totalItems} diferentes) por un total de ${formatPrice(totalAmount)}. Por favor revisa mi cotización adjunta y confírmame si está disponible. Gracias.`;
+            
+            // Descargar primero
+            downloadQuoteImage();
+            
+            // Abrir WhatsApp
+            setTimeout(() => {
+                const whatsappUrl = `https://wa.me/+526312982043?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+            }, 500);
+        }
+
+        // Búsqueda
+        document.getElementById('searchInput').addEventListener('input', renderProducts);
+
+        // Inicializar
+        renderProducts();
+        renderCart();
+    </script>
+</body>
+</html>
+
