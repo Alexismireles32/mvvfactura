@@ -33,7 +33,8 @@ Todos los productos verificados con sus 5 niveles de precios:
 
 | Verificación | Estado |
 |--------------|--------|
-| Total de productos | ✅ 91 productos |
+| Total de productos | ✅ 91 
+productos |
 | IDs únicos | ✅ Todos únicos (1A-3O) |
 | Nombres completos | ✅ Todos correctos |
 | Precio normal (1-9) | ✅ Configurado |
@@ -120,7 +121,7 @@ Todos los productos verificados con sus 5 niveles de precios:
 - ✅ Botón "Agregar" en color dorado
 - ✅ Precios se actualizan automáticamente
 - ✅ Información sobre envíos
-- ✅ Botón para descargar catálogo PDF
+- ❌ Se eliminó el botón para descargar catálogo PDF por decisión del cliente
 
 #### Paso 2: Información del Cliente
 - ✅ Formulario centrado

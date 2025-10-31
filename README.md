@@ -90,7 +90,7 @@ vercel
 
 ## 🛠️ Características
 
-- ✅ Catálogo de 91 productos
+- ✅ Listado de 91 productos (sin PDF de catálogo)
 - ✅ Cálculo automático de precios por volumen
 - ✅ Carrito de compras interactivo
 - ✅ Generación de cotización en formato JPEG
