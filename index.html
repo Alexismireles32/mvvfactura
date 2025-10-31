@@ -1431,7 +1431,7 @@
                 </div>
 
                 <div class="form-actions" style="margin-top: 25px;">
-                    <button class="btn btn-back" onclick="goToStep(1)" aria-label="Nueva cotización">← Nueva Cotización</button>
+                    <button class="btn btn-back" onclick="startNewQuote()" aria-label="Nueva cotización">← Nueva Cotización</button>
                 </div>
             </div>
         </div>
@@ -1758,6 +1758,18 @@
                 return;
             }
             goToStep(2);
+        }
+
+        // Iniciar nueva cotización
+        function startNewQuote() {
+            vibrate(20);
+            cart = [];
+            updateUI();
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+            goToStep(1);
         }
 
         // Cargar info guardada
