@@ -453,7 +453,8 @@
         }
 
         .form-group input,
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 15px;
             border: 2px solid var(--border-color);
@@ -464,8 +465,19 @@
             transition: all 0.2s;
         }
 
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23B8860B' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 12px;
+            padding-right: 40px;
+            cursor: pointer;
+        }
+
         .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group textarea:focus,
+        .form-group select:focus {
             outline: none;
             border-color: var(--gold);
             box-shadow: 0 4px 12px rgba(184, 134, 11, 0.2);
@@ -473,7 +485,7 @@
 
         .form-group textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 60px;
         }
 
         .form-actions {
@@ -775,6 +787,14 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Ajustes móviles específicos */
+        @media (max-width: 480px) {
+            .form-group select {
+                background-position: right 10px center;
+                padding-right: 35px;
+            }
+        }
+
         /* Tablet y Desktop */
         @media (min-width: 768px) {
             .container {
@@ -834,6 +854,11 @@
 
             .quote-logo {
                 height: 80px;
+            }
+
+            .customer-form {
+                max-width: 700px;
+                margin: 0 auto;
             }
         }
 
@@ -979,15 +1004,70 @@
                 </div>
                 <div class="form-group">
                     <label for="customerPhone">Teléfono *</label>
-                    <input type="tel" id="customerPhone" placeholder="Número de teléfono" required autocomplete="tel" inputmode="tel">
+                    <input type="tel" id="customerPhone" placeholder="10 dígitos" required autocomplete="tel" inputmode="tel">
+                </div>
+                
+                <h3 style="color: var(--gold); margin: 25px 0 15px 0; font-size: 1.1rem;">📍 Dirección de Envío</h3>
+                
+                <div class="form-group">
+                    <label for="customerStreet">Calle y Número *</label>
+                    <input type="text" id="customerStreet" placeholder="Ej: Av. Reforma 123" required autocomplete="street-address" inputmode="text">
                 </div>
                 <div class="form-group">
-                    <label for="customerEmail">Correo Electrónico (opcional)</label>
-                    <input type="email" id="customerEmail" placeholder="correo@ejemplo.com" autocomplete="email" inputmode="email">
+                    <label for="customerColonia">Colonia *</label>
+                    <input type="text" id="customerColonia" placeholder="Ej: Centro" required inputmode="text">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 12px;">
+                    <div class="form-group">
+                        <label for="customerCP">Código Postal *</label>
+                        <input type="text" id="customerCP" placeholder="00000" required autocomplete="postal-code" inputmode="numeric" maxlength="5">
+                    </div>
+                    <div class="form-group">
+                        <label for="customerCity">Ciudad *</label>
+                        <input type="text" id="customerCity" placeholder="Ej: Guadalajara" required autocomplete="address-level2" inputmode="text">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="customerAddress">Dirección de Envío *</label>
-                    <textarea id="customerAddress" placeholder="Dirección completa con código postal" required autocomplete="street-address"></textarea>
+                    <label for="customerState">Estado *</label>
+                    <select id="customerState" required>
+                        <option value="">Seleccione un estado</option>
+                        <option value="Aguascalientes">Aguascalientes</option>
+                        <option value="Baja California">Baja California</option>
+                        <option value="Baja California Sur">Baja California Sur</option>
+                        <option value="Campeche">Campeche</option>
+                        <option value="Chiapas">Chiapas</option>
+                        <option value="Chihuahua">Chihuahua</option>
+                        <option value="Ciudad de México">Ciudad de México</option>
+                        <option value="Coahuila">Coahuila</option>
+                        <option value="Colima">Colima</option>
+                        <option value="Durango">Durango</option>
+                        <option value="Guanajuato">Guanajuato</option>
+                        <option value="Guerrero">Guerrero</option>
+                        <option value="Hidalgo">Hidalgo</option>
+                        <option value="Jalisco">Jalisco</option>
+                        <option value="México">México</option>
+                        <option value="Michoacán">Michoacán</option>
+                        <option value="Morelos">Morelos</option>
+                        <option value="Nayarit">Nayarit</option>
+                        <option value="Nuevo León">Nuevo León</option>
+                        <option value="Oaxaca">Oaxaca</option>
+                        <option value="Puebla">Puebla</option>
+                        <option value="Querétaro">Querétaro</option>
+                        <option value="Quintana Roo">Quintana Roo</option>
+                        <option value="San Luis Potosí">San Luis Potosí</option>
+                        <option value="Sinaloa">Sinaloa</option>
+                        <option value="Sonora">Sonora</option>
+                        <option value="Tabasco">Tabasco</option>
+                        <option value="Tamaulipas">Tamaulipas</option>
+                        <option value="Tlaxcala">Tlaxcala</option>
+                        <option value="Veracruz">Veracruz</option>
+                        <option value="Yucatán">Yucatán</option>
+                        <option value="Zacatecas">Zacatecas</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="customerReferences">Referencias (opcional)</label>
+                    <textarea id="customerReferences" placeholder="Entre calles, puntos de referencia, etc." rows="2"></textarea>
                 </div>
                 <div class="form-actions">
                     <button class="btn btn-back" onclick="goToStep(1)" aria-label="Volver a productos">← Volver</button>
@@ -1351,14 +1431,22 @@
             const saved = {
                 name: localStorage.getItem('customerName'),
                 phone: localStorage.getItem('customerPhone'),
-                email: localStorage.getItem('customerEmail'),
-                address: localStorage.getItem('customerAddress')
+                street: localStorage.getItem('customerStreet'),
+                colonia: localStorage.getItem('customerColonia'),
+                cp: localStorage.getItem('customerCP'),
+                city: localStorage.getItem('customerCity'),
+                state: localStorage.getItem('customerState'),
+                references: localStorage.getItem('customerReferences')
             };
 
             if (saved.name) document.getElementById('customerName').value = saved.name;
             if (saved.phone) document.getElementById('customerPhone').value = saved.phone;
-            if (saved.email) document.getElementById('customerEmail').value = saved.email;
-            if (saved.address) document.getElementById('customerAddress').value = saved.address;
+            if (saved.street) document.getElementById('customerStreet').value = saved.street;
+            if (saved.colonia) document.getElementById('customerColonia').value = saved.colonia;
+            if (saved.cp) document.getElementById('customerCP').value = saved.cp;
+            if (saved.city) document.getElementById('customerCity').value = saved.city;
+            if (saved.state) document.getElementById('customerState').value = saved.state;
+            if (saved.references) document.getElementById('customerReferences').value = saved.references;
         }
 
         // Generar cotización
@@ -1366,19 +1454,33 @@
             vibrate(10);
             const name = document.getElementById('customerName').value.trim();
             const phone = document.getElementById('customerPhone').value.trim();
-            const email = document.getElementById('customerEmail').value.trim();
-            const address = document.getElementById('customerAddress').value.trim();
+            const street = document.getElementById('customerStreet').value.trim();
+            const colonia = document.getElementById('customerColonia').value.trim();
+            const cp = document.getElementById('customerCP').value.trim();
+            const city = document.getElementById('customerCity').value.trim();
+            const state = document.getElementById('customerState').value;
+            const references = document.getElementById('customerReferences').value.trim();
 
-            if (!name || !phone || !address) {
+            if (!name || !phone || !street || !colonia || !cp || !city || !state) {
                 alert('⚠️ Por favor complete todos los campos obligatorios.');
+                return;
+            }
+
+            // Validar código postal (5 dígitos)
+            if (!/^\d{5}$/.test(cp)) {
+                alert('⚠️ El código postal debe tener 5 dígitos.');
                 return;
             }
 
             // Guardar datos
             localStorage.setItem('customerName', name);
             localStorage.setItem('customerPhone', phone);
-            localStorage.setItem('customerEmail', email);
-            localStorage.setItem('customerAddress', address);
+            localStorage.setItem('customerStreet', street);
+            localStorage.setItem('customerColonia', colonia);
+            localStorage.setItem('customerCP', cp);
+            localStorage.setItem('customerCity', city);
+            localStorage.setItem('customerState', state);
+            localStorage.setItem('customerReferences', references);
 
             // Generar fecha
             const now = new Date();
@@ -1395,11 +1497,14 @@
                 <h3>👤 Datos del Cliente</h3>
                 <p><strong>Nombre:</strong> ${name}</p>
                 <p><strong>Teléfono:</strong> ${phone}</p>
+                <p style="margin-top: 15px;"><strong>📍 Dirección de Envío:</strong></p>
+                <p style="margin-left: 10px;">${street}</p>
+                <p style="margin-left: 10px;">Col. ${colonia}</p>
+                <p style="margin-left: 10px;">C.P. ${cp}, ${city}, ${state}</p>
             `;
-            if (email) {
-                customerInfo += `<p><strong>Email:</strong> ${email}</p>`;
+            if (references) {
+                customerInfo += `<p style="margin-left: 10px;"><em>Ref: ${references}</em></p>`;
             }
-            customerInfo += `<p><strong>Dirección de Envío:</strong> ${address}</p>`;
             document.getElementById('quoteCustomer').innerHTML = customerInfo;
 
             // Tabla de productos
