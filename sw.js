@@ -1,10 +1,10 @@
-// Service Worker para PWA - MVV Natural
-const CACHE_NAME = 'mvvnatural-v2-hq';
+// Service Worker para PWA - MV Natural
+const CACHE_NAME = 'mvnatural-v1';
 const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
-  'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js',
   'https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png'
 ];
 
