@@ -2,8 +2,31 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#B8860B">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="MV Natural">
+    
+    <!-- SEO -->
+    <meta name="description" content="Sistema de cotizaciones profesional para productos MV Natural. Crea cotizaciones al instante con precios de mayoreo.">
+    <meta name="keywords" content="MV Natural, cotizaciones, productos naturales, mayoreo">
+    
+    <!-- Social Media -->
+    <meta property="og:title" content="MV Natural - Cotizaciones">
+    <meta property="og:description" content="Sistema de cotizaciones profesional">
+    <meta property="og:type" content="website">
+    
     <title>MV Natural - Cotizaciones</title>
+    
+    <!-- Manifest para PWA -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Preconnect para CDNs -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://res.cloudinary.com">
     
     <!-- CDN de html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
@@ -13,6 +36,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
@@ -24,131 +48,158 @@
             --border-color: #E5D3A3;
             --text-dark: #5C4A1F;
             --text-brown: #8B6914;
+            
+            /* Safe areas para notch */
+            --sat: env(safe-area-inset-top);
+            --sar: env(safe-area-inset-right);
+            --sab: env(safe-area-inset-bottom);
+            --sal: env(safe-area-inset-left);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background-color: #f5f5f5;
             color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            touch-action: manipulation;
+            overflow-x: hidden;
         }
 
-        /* Header */
+        /* Header optimizado para móvil */
         .header {
             background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%);
-            padding: 20px 0;
+            padding: max(20px, var(--sat)) 0 20px 0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .header-content {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 30px;
+            padding: 0 max(20px, var(--sal)) 0 max(20px, var(--sar));
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
         }
 
         .logo {
-            height: 60px;
+            height: 50px;
+            width: auto;
         }
 
         .header-title {
             color: white;
-            font-size: 1.5rem;
+            font-size: clamp(1rem, 4vw, 1.5rem);
             font-weight: 600;
+            white-space: nowrap;
         }
 
-        /* Container */
+        /* Container con safe areas */
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 30px;
+            padding: 15px max(15px, var(--sar)) max(80px, calc(80px + var(--sab))) max(15px, var(--sal));
+            min-height: calc(100vh - 80px);
         }
 
-        /* Info Box */
+        /* Info Box móvil optimizado */
         .info-box {
             background: var(--light-cream);
             border-left: 4px solid var(--gold);
-            padding: 20px;
-            margin-bottom: 30px;
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
 
         .info-box h3 {
             color: var(--text-brown);
             margin-bottom: 10px;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .info-box p {
             color: var(--text-brown);
-            line-height: 1.6;
             margin-bottom: 8px;
         }
 
-        /* Step System */
+        /* Steps */
         .step {
             display: none;
+            animation: fadeIn 0.3s ease-in;
         }
 
         .step.active {
             display: block;
         }
 
-        /* Products Section */
-        .products-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .section-title {
-            color: var(--gold);
-            font-size: 1.8rem;
-            font-weight: 600;
+        /* Search optimizado para móvil */
+        .search-container {
+            margin-bottom: 20px;
         }
 
         .search-box {
             width: 100%;
-            max-width: 400px;
-            padding: 12px 20px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 1rem;
+            padding: 15px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 16px; /* Previene zoom en iOS */
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.2s;
         }
 
         .search-box:focus {
             outline: none;
             border-color: var(--gold);
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.2);
         }
 
+        .section-title {
+            color: var(--gold);
+            font-size: clamp(1.3rem, 5vw, 1.8rem);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* Layout responsive */
         .content-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 30px;
-        }
-
-        /* Product Grid */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            display: flex;
+            flex-direction: column;
             gap: 20px;
         }
 
+        /* Products Grid - Mobile First */
+        .products-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        /* Product Card táctil optimizado */
         .product-card {
             background: white;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
         }
 
-        .product-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        .product-card:active {
+            transform: scale(0.98);
         }
 
         .product-name {
@@ -156,88 +207,100 @@
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 5px;
+            line-height: 1.3;
         }
 
         .product-id {
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-bottom: 15px;
         }
 
         .product-controls {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .product-price {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--text-dark);
         }
 
+        /* Controles de cantidad optimizados para touch */
         .quantity-controls {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            justify-content: center;
         }
 
         .qty-btn {
-            width: 35px;
-            height: 35px;
-            border: 1px solid var(--gold);
+            min-width: 48px;
+            min-height: 48px;
+            border: 2px solid var(--gold);
             background: white;
             color: var(--gold);
-            border-radius: 4px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
+            font-weight: 600;
+            touch-action: manipulation;
         }
 
-        .qty-btn:hover {
+        .qty-btn:active {
             background: var(--gold);
             color: white;
+            transform: scale(0.95);
         }
 
         .qty-input {
-            width: 60px;
+            width: 80px;
             text-align: center;
-            padding: 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 1rem;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: white;
         }
 
+        /* Botón agregar optimizado */
         .btn-add {
+            width: 100%;
             background: linear-gradient(135deg, var(--light-gold) 0%, var(--gold) 100%);
             color: white;
             border: none;
-            padding: 10px 25px;
-            border-radius: 4px;
+            padding: 15px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
             font-size: 1rem;
             transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
+            min-height: 48px;
+            touch-action: manipulation;
         }
 
-        .btn-add:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        .btn-add:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 6px rgba(184, 134, 11, 0.3);
         }
 
-        /* Cart Section */
+        /* Cart Section - Mobile First */
         .cart-section {
             background: white;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 20px;
-            position: sticky;
-            top: 20px;
-            height: fit-content;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 80px;
         }
 
         .cart-header {
@@ -251,7 +314,7 @@
 
         .cart-title {
             color: var(--gold);
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -259,19 +322,21 @@
         }
 
         .cart-logo {
-            height: 30px;
+            height: 25px;
         }
 
         .cart-empty {
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 15px;
             color: #999;
+            font-size: 0.95rem;
         }
 
         .cart-items {
-            max-height: 400px;
+            max-height: 300px;
             overflow-y: auto;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            -webkit-overflow-scrolling: touch;
         }
 
         .cart-item {
@@ -286,7 +351,8 @@
         .cart-item-name {
             font-weight: 600;
             color: var(--text-dark);
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
         }
 
         .cart-item-details {
@@ -295,21 +361,25 @@
             align-items: center;
             font-size: 0.9rem;
             color: #666;
+            margin-bottom: 10px;
         }
 
         .cart-item-remove {
             background: #dc3545;
             color: white;
             border: none;
-            padding: 5px 10px;
-            border-radius: 3px;
+            padding: 10px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.85rem;
-            margin-top: 8px;
+            font-size: 0.9rem;
+            min-height: 40px;
+            width: 100%;
+            touch-action: manipulation;
         }
 
-        .cart-item-remove:hover {
+        .cart-item-remove:active {
             background: #c82333;
+            transform: scale(0.98);
         }
 
         .cart-summary {
@@ -320,55 +390,58 @@
         .cart-summary-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-size: 1rem;
         }
 
         .cart-total {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: var(--gold);
             margin-top: 10px;
         }
 
+        /* Botones principales táctiles */
         .btn-next {
             width: 100%;
             background: linear-gradient(135deg, var(--light-gold) 0%, var(--gold) 100%);
             color: white;
             border: none;
-            padding: 15px;
-            border-radius: 4px;
+            padding: 18px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
             font-size: 1.1rem;
             margin-top: 15px;
             transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
+            min-height: 56px;
+            touch-action: manipulation;
         }
 
-        .btn-next:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.4);
+        .btn-next:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 6px rgba(184, 134, 11, 0.3);
         }
 
         .btn-next:disabled {
             background: #ccc;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
         /* Customer Form */
         .customer-form {
             background: white;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 40px;
-            max-width: 800px;
-            margin: 0 auto;
+            border-radius: 12px;
+            padding: 25px 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
@@ -376,22 +449,26 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: var(--text-dark);
+            font-size: 1rem;
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 1rem;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 16px; /* Previene zoom en iOS */
             font-family: inherit;
+            background: white;
+            transition: all 0.2s;
         }
 
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
             border-color: var(--gold);
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.2);
         }
 
         .form-group textarea {
@@ -400,20 +477,22 @@
         }
 
         .form-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 12px;
+            margin-top: 25px;
         }
 
         .btn {
-            flex: 1;
-            padding: 15px;
+            padding: 18px;
             border: none;
-            border-radius: 4px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1rem;
             transition: all 0.2s;
+            min-height: 56px;
+            touch-action: manipulation;
         }
 
         .btn-back {
@@ -421,39 +500,40 @@
             color: white;
         }
 
-        .btn-back:hover {
+        .btn-back:active {
             background: #5a6268;
+            transform: scale(0.98);
         }
 
         .btn-generate {
             background: linear-gradient(135deg, var(--light-gold) 0%, var(--gold) 100%);
             color: white;
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
         }
 
-        .btn-generate:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.4);
+        .btn-generate:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 6px rgba(184, 134, 11, 0.3);
         }
 
         /* Quote Section */
         .quote-wrapper {
-            max-width: 1000px;
             margin: 0 auto;
         }
 
         .quote-actions-top {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .btn-whatsapp {
-            flex: 1;
             background: #25D366;
             color: white;
-            padding: 15px;
+            padding: 18px;
             border: none;
-            border-radius: 4px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
             font-size: 1.1rem;
@@ -462,21 +542,23 @@
             justify-content: center;
             gap: 10px;
             transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            min-height: 56px;
+            touch-action: manipulation;
         }
 
-        .btn-whatsapp:hover {
+        .btn-whatsapp:active {
             background: #20BA5A;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+            transform: translateY(2px);
+            box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
         }
 
         .btn-download {
-            flex: 1;
             background: linear-gradient(135deg, var(--light-gold) 0%, var(--gold) 100%);
             color: white;
-            padding: 15px;
+            padding: 18px;
             border: none;
-            border-radius: 4px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
             font-size: 1.1rem;
@@ -485,88 +567,92 @@
             justify-content: center;
             gap: 10px;
             transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
+            min-height: 56px;
+            touch-action: manipulation;
         }
 
-        .btn-download:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.4);
+        .btn-download:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 6px rgba(184, 134, 11, 0.3);
         }
 
         #quotePrintArea {
             background: white;
-            padding: 40px;
+            padding: 25px 20px;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .quote-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             padding-bottom: 20px;
             border-bottom: 3px solid var(--gold);
         }
 
         .quote-logo {
-            height: 80px;
+            height: 60px;
             margin-bottom: 15px;
         }
 
         .quote-header h2 {
             color: var(--gold);
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 10px;
         }
 
         .quote-date {
             color: #666;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .quote-customer {
             background: var(--light-cream);
             padding: 20px;
-            border-radius: 4px;
-            margin-bottom: 30px;
+            border-radius: 8px;
+            margin-bottom: 25px;
         }
 
         .quote-customer h3 {
             color: var(--gold);
             margin-bottom: 15px;
+            font-size: 1.1rem;
         }
 
         .quote-customer p {
             margin-bottom: 8px;
             color: var(--text-dark);
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
 
         .quote-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            font-size: 0.85rem;
         }
 
         .quote-table th {
             background: linear-gradient(135deg, var(--light-gold) 0%, var(--gold) 100%);
             color: white;
-            padding: 12px;
+            padding: 12px 8px;
             text-align: left;
             font-weight: 600;
+            font-size: 0.8rem;
         }
 
         .quote-table td {
-            padding: 12px;
+            padding: 12px 8px;
             border-bottom: 1px solid #eee;
-        }
-
-        .quote-table tr:hover {
-            background: #f9f9f9;
         }
 
         .quote-summary {
             background: var(--light-cream);
             padding: 20px;
-            border-radius: 4px;
+            border-radius: 8px;
             margin-bottom: 20px;
         }
 
@@ -574,11 +660,11 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 10px;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .quote-total-row {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--gold);
             margin-top: 15px;
@@ -590,9 +676,10 @@
             background: #fff3cd;
             border-left: 4px solid #ffc107;
             padding: 15px;
-            border-radius: 4px;
-            font-size: 0.95rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
             color: #856404;
+            line-height: 1.5;
         }
 
         /* Shipping Info */
@@ -600,39 +687,43 @@
             background: var(--light-cream);
             border-left: 4px solid var(--gold);
             padding: 20px;
-            margin: 30px 0;
-            border-radius: 4px;
+            margin: 25px 0;
+            border-radius: 8px;
+            font-size: 0.9rem;
         }
 
         .shipping-info h3 {
             color: var(--text-brown);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            font-size: 1rem;
         }
 
         .shipping-info p {
             color: var(--text-brown);
             line-height: 1.6;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         /* Catalog Section */
         .catalog-section {
             background: var(--light-cream);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 30px;
-            margin: 30px 0;
+            border-radius: 12px;
+            padding: 25px 20px;
+            margin: 25px 0;
             text-align: center;
         }
 
         .catalog-section h3 {
             color: var(--gold);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
         }
 
         .catalog-section p {
             color: var(--text-brown);
             margin-bottom: 20px;
+            font-size: 0.95rem;
         }
 
         .btn-catalog {
@@ -641,19 +732,22 @@
             gap: 10px;
             background: linear-gradient(135deg, var(--light-gold) 0%, var(--gold) 100%);
             color: white;
-            padding: 15px 30px;
+            padding: 15px 25px;
             border: none;
-            border-radius: 4px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1rem;
             text-decoration: none;
             transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
+            min-height: 48px;
+            touch-action: manipulation;
         }
 
-        .btn-catalog:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.4);
+        .btn-catalog:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 6px rgba(184, 134, 11, 0.3);
         }
 
         /* Footer */
@@ -661,58 +755,147 @@
             background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%);
             color: white;
             text-align: center;
-            padding: 20px;
-            margin-top: 50px;
+            padding: 20px max(20px, var(--sal)) max(20px, calc(20px + var(--sab))) max(20px, var(--sar));
+            margin-top: 40px;
+            font-size: 0.9rem;
         }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
+        /* Loading State */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Tablet y Desktop */
+        @media (min-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+
+            .logo {
+                height: 60px;
+            }
+
+            .header-title {
+                font-size: 1.5rem;
+            }
+
             .content-wrapper {
-                grid-template-columns: 1fr;
+                flex-direction: row;
+            }
+
+            .products-area {
+                flex: 1;
             }
 
             .cart-section {
-                position: relative;
-                top: 0;
-                order: -1;
+                width: 350px;
+                flex-shrink: 0;
             }
 
             .products-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
-            .container {
-                padding: 15px;
-            }
-
-            .products-header {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .search-box {
-                max-width: 100%;
-            }
-
-            .customer-form {
-                padding: 20px;
-            }
-
-            #quotePrintArea {
-                padding: 20px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
             }
 
             .quote-actions-top {
-                flex-direction: column;
+                grid-template-columns: 1fr 1fr;
             }
+
+            .form-actions {
+                grid-template-columns: auto 1fr;
+            }
+
+            .quote-table {
+                font-size: 0.95rem;
+            }
+
+            .quote-table th {
+                font-size: 0.9rem;
+                padding: 14px 12px;
+            }
+
+            .quote-table td {
+                padding: 14px 12px;
+            }
+
+            #quotePrintArea {
+                padding: 40px;
+            }
+
+            .quote-logo {
+                height: 80px;
+            }
+        }
+
+        /* Desktop grande */
+        @media (min-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            /* Opcional: agregar soporte para modo oscuro */
+        }
+
+        /* Orientación landscape en móvil */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .header {
+                padding: 10px 0;
+            }
+            
+            .logo {
+                height: 40px;
+            }
+            
+            .cart-items {
+                max-height: 150px;
+            }
+        }
+
+        /* Accesibilidad */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Mejoras de rendimiento */
+        .product-card,
+        .cart-section,
+        .btn,
+        .btn-add,
+        .qty-btn {
+            will-change: transform;
+        }
+
+        /* Animación de carga */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading-skeleton {
+            animation: pulse 1.5s ease-in-out infinite;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
         }
     </style>
 </head>
@@ -720,7 +903,7 @@
     <!-- Header -->
     <div class="header">
         <div class="header-content">
-            <img src="https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png" alt="MV Natural Logo" class="logo">
+            <img src="https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png" alt="MV Natural Logo" class="logo" loading="eager">
             <div class="header-title">Sistema de Cotizaciones</div>
         </div>
     </div>
@@ -729,27 +912,27 @@
         <!-- STEP 1: Product Selection -->
         <div id="step1" class="step active">
             <div class="info-box">
-                <h3>Información de precios:</h3>
+                <h3>📋 Información de precios:</h3>
                 <p>Los precios varían según la cantidad de productos (1, 10, 30, 50, 100). Mientras más productos agregue, el precio se actualizará automáticamente para reflejar los descuentos por volumen.</p>
                 <p><strong>Para mayoreo de 10 piezas, pueden ser productos variados. Para mayoreo de 30 piezas o más, deben ser del mismo producto.</strong></p>
             </div>
 
             <div class="content-wrapper">
                 <div class="products-area">
-                    <div class="products-header">
-                        <h2 class="section-title">Productos MV Natural</h2>
-                        <input type="text" id="searchInput" class="search-box" placeholder="Buscar productos por nombre o ID...">
+                    <h2 class="section-title">Productos MV Natural</h2>
+                    <div class="search-container">
+                        <input type="search" id="searchInput" class="search-box" placeholder="🔍 Buscar productos..." autocomplete="off" inputmode="search">
                     </div>
                     <div id="productsGrid" class="products-grid"></div>
 
                     <div class="shipping-info">
-                        <h3>Información importante sobre envíos:</h3>
+                        <h3>🚚 Información importante sobre envíos:</h3>
                         <p>Si su pedido incluye productos de mayor tamaño como PROTEIN BODY, MAXI FIBRA, GEL TONIC 250 ML o LIDA SHAKE MALTEADA, el precio del envío puede aumentar.</p>
                         <p>Para zonas extendidas o de difícil acceso, se cobrará un costo adicional de envío. Por favor consulte con Rita Valencia para más detalles.</p>
                     </div>
 
                     <div class="catalog-section">
-                        <h3>Catálogo de Productos</h3>
+                        <h3>📚 Catálogo de Productos</h3>
                         <p>Descargue nuestro catálogo completo de productos para conocer toda nuestra oferta.</p>
                         <a href="public/catalogo-mvvNaturalss-24_240923_175642.pdf" class="btn-catalog" download>
                             📄 Descargar Catálogo PDF
@@ -760,27 +943,27 @@
                 <div class="cart-section">
                     <div class="cart-header">
                         <div class="cart-title">
-                            <img src="https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png" alt="Logo" class="cart-logo">
-                            Carrito de Compras
+                            <img src="https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png" alt="Logo" class="cart-logo" loading="lazy">
+                            🛒 Carrito
                         </div>
                     </div>
                     <div id="cartItems" class="cart-items"></div>
                     <div id="cartSummary" class="cart-summary" style="display: none;">
                         <div class="cart-summary-row">
                             <span>Subtotal:</span>
-                            <span id="subtotal">$0.00</span>
+                            <span id="subtotal">$0</span>
                         </div>
                         <div class="cart-summary-row">
                             <span>Envío (Estafeta):</span>
-                            <span id="shipping">$0.00</span>
+                            <span id="shipping">$0</span>
                         </div>
                         <div class="cart-summary-row cart-total">
                             <span>Total:</span>
-                            <span id="total">$0.00</span>
+                            <span id="total">$0</span>
                         </div>
                     </div>
-                    <button id="btnNextStep" class="btn-next" onclick="goToStep(2)" disabled>
-                        Continuar a Información del Cliente →
+                    <button id="btnNextStep" class="btn-next" onclick="goToStep(2)" disabled aria-label="Continuar a información del cliente">
+                        Continuar →
                     </button>
                 </div>
             </div>
@@ -788,27 +971,27 @@
 
         <!-- STEP 2: Customer Information -->
         <div id="step2" class="step">
-            <h2 class="section-title" style="margin-bottom: 30px;">Información del Cliente</h2>
+            <h2 class="section-title">📋 Información del Cliente</h2>
             <div class="customer-form">
                 <div class="form-group">
                     <label for="customerName">Nombre Completo *</label>
-                    <input type="text" id="customerName" placeholder="Ingrese su nombre completo" required>
+                    <input type="text" id="customerName" placeholder="Nombre completo" required autocomplete="name" inputmode="text">
                 </div>
                 <div class="form-group">
                     <label for="customerPhone">Teléfono *</label>
-                    <input type="text" id="customerPhone" placeholder="Ingrese su número de teléfono" required>
+                    <input type="tel" id="customerPhone" placeholder="Número de teléfono" required autocomplete="tel" inputmode="tel">
                 </div>
                 <div class="form-group">
                     <label for="customerEmail">Correo Electrónico (opcional)</label>
-                    <input type="email" id="customerEmail" placeholder="Ingrese su correo electrónico">
+                    <input type="email" id="customerEmail" placeholder="correo@ejemplo.com" autocomplete="email" inputmode="email">
                 </div>
                 <div class="form-group">
                     <label for="customerAddress">Dirección de Envío *</label>
-                    <textarea id="customerAddress" placeholder="Ingrese su dirección completa incluyendo código postal" required></textarea>
+                    <textarea id="customerAddress" placeholder="Dirección completa con código postal" required autocomplete="street-address"></textarea>
                 </div>
                 <div class="form-actions">
-                    <button class="btn btn-back" onclick="goToStep(1)">← Volver</button>
-                    <button class="btn btn-generate" onclick="generateQuote()">Generar Cotización →</button>
+                    <button class="btn btn-back" onclick="goToStep(1)" aria-label="Volver a productos">← Volver</button>
+                    <button class="btn btn-generate" onclick="generateQuote()" aria-label="Generar cotización">Generar Cotización</button>
                 </div>
             </div>
         </div>
@@ -817,17 +1000,17 @@
         <div id="step3" class="step">
             <div class="quote-wrapper">
                 <div class="quote-actions-top">
-                    <button class="btn-download" onclick="downloadQuoteImage()">
-                        💾 Guardar Imagen de Cotización
+                    <button class="btn-download" onclick="downloadQuoteImage()" aria-label="Guardar imagen">
+                        💾 Guardar Imagen
                     </button>
-                    <button class="btn-whatsapp" onclick="sendWhatsApp()">
-                        📱 Enviar por WhatsApp
+                    <button class="btn-whatsapp" onclick="sendWhatsApp()" aria-label="Enviar por WhatsApp">
+                        📱 Enviar WhatsApp
                     </button>
                 </div>
 
                 <div id="quotePrintArea">
                     <div class="quote-header">
-                        <img src="https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png" alt="MV Natural Logo" class="quote-logo">
+                        <img src="https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png" alt="MV Natural Logo" class="quote-logo" loading="eager">
                         <h2>COTIZACIÓN</h2>
                         <div id="quoteDate" class="quote-date"></div>
                     </div>
@@ -839,8 +1022,8 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Producto</th>
-                                <th>Cantidad</th>
-                                <th>Precio Unitario</th>
+                                <th>Cant.</th>
+                                <th>P. Unit.</th>
                                 <th>Subtotal</th>
                             </tr>
                         </thead>
@@ -850,15 +1033,15 @@
                     <div class="quote-summary">
                         <div class="quote-summary-row">
                             <span>Subtotal:</span>
-                            <span id="quoteSubtotal">$0.00</span>
+                            <span id="quoteSubtotal">$0</span>
                         </div>
                         <div class="quote-summary-row">
                             <span>Envío (Estafeta):</span>
-                            <span id="quoteShipping">$0.00</span>
+                            <span id="quoteShipping">$0</span>
                         </div>
                         <div class="quote-summary-row quote-total-row">
                             <span>Total:</span>
-                            <span id="quoteTotal">$0.00</span>
+                            <span id="quoteTotal">$0</span>
                         </div>
                     </div>
 
@@ -867,8 +1050,8 @@
                     </div>
                 </div>
 
-                <div class="form-actions" style="margin-top: 30px;">
-                    <button class="btn btn-back" onclick="goToStep(1)">← Nueva Cotización</button>
+                <div class="form-actions" style="margin-top: 25px;">
+                    <button class="btn btn-back" onclick="goToStep(1)" aria-label="Nueva cotización">← Nueva Cotización</button>
                 </div>
             </div>
         </div>
@@ -979,6 +1162,13 @@
         let cart = [];
         let currentStep = 1;
 
+        // Haptic feedback (vibración)
+        function vibrate(duration = 10) {
+            if ('vibrate' in navigator) {
+                navigator.vibrate(duration);
+            }
+        }
+
         // Formatear precio
         function formatPrice(price) {
             return '$' + price.toFixed(0);
@@ -1029,14 +1219,17 @@
                         <div class="product-name">${product.name}</div>
                         <div class="product-id">ID: ${product.id}</div>
                         <div class="product-controls">
-                            <div class="product-price">Precio: ${formatPrice(currentPrice)}</div>
-                            <div class="quantity-controls">
-                                <button class="qty-btn" onclick="changeQuantity('${product.id}', -1)">-</button>
-                                <input type="number" class="qty-input" value="${quantity}" 
-                                       onchange="setQuantity('${product.id}', this.value)" min="0">
-                                <button class="qty-btn" onclick="changeQuantity('${product.id}', 1)">+</button>
-                            </div>
-                            ${quantity > 0 ? '' : '<button class="btn-add" onclick="changeQuantity(\'' + product.id + '\', 1)">Agregar</button>'}
+                            <div class="product-price">${formatPrice(currentPrice)}</div>
+                            ${quantity > 0 ? `
+                                <div class="quantity-controls">
+                                    <button class="qty-btn" onclick="changeQuantity('${product.id}', -1)" aria-label="Disminuir cantidad">−</button>
+                                    <input type="number" class="qty-input" value="${quantity}" 
+                                           onchange="setQuantity('${product.id}', this.value)" min="0" inputmode="numeric">
+                                    <button class="qty-btn" onclick="changeQuantity('${product.id}', 1)" aria-label="Aumentar cantidad">+</button>
+                                </div>
+                            ` : `
+                                <button class="btn-add" onclick="changeQuantity('${product.id}', 1)" aria-label="Agregar ${product.name}">Agregar al carrito</button>
+                            `}
                         </div>
                     </div>
                 `;
@@ -1045,6 +1238,7 @@
 
         // Cambiar cantidad
         function changeQuantity(productId, delta) {
+            vibrate(10);
             const product = products.find(p => p.id === productId);
             const cartItem = cart.find(item => item.id === productId);
             
@@ -1091,7 +1285,7 @@
             const cartSummaryEl = document.getElementById('cartSummary');
 
             if (cart.length === 0) {
-                cartItemsEl.innerHTML = '<div class="cart-empty">El carrito está vacío. Agregue productos para generar una cotización.</div>';
+                cartItemsEl.innerHTML = '<div class="cart-empty">🛒 El carrito está vacío.<br>Agregue productos para continuar.</div>';
                 cartSummaryEl.style.display = 'none';
                 return;
             }
@@ -1109,9 +1303,10 @@
                     <div class="cart-item">
                         <div class="cart-item-name">${product.id} - ${product.name}</div>
                         <div class="cart-item-details">
-                            <span>${item.quantity} × ${formatPrice(unitPrice)} = ${formatPrice(itemTotal)}</span>
+                            <span>${item.quantity} × ${formatPrice(unitPrice)}</span>
+                            <span><strong>${formatPrice(itemTotal)}</strong></span>
                         </div>
-                        <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">Eliminar</button>
+                        <button class="cart-item-remove" onclick="removeFromCart('${item.id}')" aria-label="Eliminar ${product.name}">🗑️ Eliminar</button>
                     </div>
                 `;
             }).join('');
@@ -1128,6 +1323,7 @@
 
         // Eliminar del carrito
         function removeFromCart(productId) {
+            vibrate(20);
             cart = cart.filter(item => item.id !== productId);
             updateUI();
         }
@@ -1139,10 +1335,11 @@
 
         // Cambiar de paso
         function goToStep(step) {
+            vibrate(10);
             document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
             document.getElementById(`step${step}`).classList.add('active');
             currentStep = step;
-            window.scrollTo(0, 0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
 
             if (step === 2) {
                 loadSavedCustomerInfo();
@@ -1166,13 +1363,14 @@
 
         // Generar cotización
         function generateQuote() {
+            vibrate(10);
             const name = document.getElementById('customerName').value.trim();
             const phone = document.getElementById('customerPhone').value.trim();
             const email = document.getElementById('customerEmail').value.trim();
             const address = document.getElementById('customerAddress').value.trim();
 
             if (!name || !phone || !address) {
-                alert('Por favor complete todos los campos obligatorios.');
+                alert('⚠️ Por favor complete todos los campos obligatorios.');
                 return;
             }
 
@@ -1194,7 +1392,7 @@
 
             // Datos del cliente
             let customerInfo = `
-                <h3>Datos del Cliente</h3>
+                <h3>👤 Datos del Cliente</h3>
                 <p><strong>Nombre:</strong> ${name}</p>
                 <p><strong>Teléfono:</strong> ${phone}</p>
             `;
@@ -1220,7 +1418,7 @@
                         <td>${product.name}</td>
                         <td>${item.quantity}</td>
                         <td>${formatPrice(unitPrice)}</td>
-                        <td>${formatPrice(itemTotal)}</td>
+                        <td><strong>${formatPrice(itemTotal)}</strong></td>
                     </tr>
                 `;
             }).join('');
@@ -1239,6 +1437,11 @@
 
         // Descargar imagen
         function downloadQuoteImage() {
+            vibrate(20);
+            const btn = event.target;
+            btn.innerHTML = '<span class="loading"></span> Generando...';
+            btn.disabled = true;
+
             const quotePrintArea = document.getElementById('quotePrintArea');
 
             html2canvas(quotePrintArea, {
@@ -1252,11 +1455,18 @@
                 link.download = 'Cotizacion_MVNatural.jpg';
                 link.href = imgData;
                 link.click();
+                
+                btn.innerHTML = '✅ Imagen Guardada';
+                setTimeout(() => {
+                    btn.innerHTML = '💾 Guardar Imagen';
+                    btn.disabled = false;
+                }, 2000);
             });
         }
 
         // Enviar WhatsApp
         function sendWhatsApp() {
+            vibrate(20);
             const name = localStorage.getItem('customerName') || 'Cliente';
             const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
             const totalItems = cart.length;
@@ -1283,13 +1493,32 @@
             }, 500);
         }
 
-        // Búsqueda
-        document.getElementById('searchInput').addEventListener('input', renderProducts);
+        // Búsqueda con debounce
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(renderProducts, 300);
+        });
 
         // Inicializar
-        renderProducts();
-        renderCart();
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            renderCart();
+            
+            // PWA Install prompt
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+            });
+        });
+
+        // Service Worker registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+        }
     </script>
 </body>
 </html>
-
