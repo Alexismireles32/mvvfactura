@@ -1,5 +1,6 @@
 // Service Worker para PWA - MV Natural
-const CACHE_NAME = 'mvnatural-v1';
+const CACHE_VERSION = 'v3';
+const CACHE_NAME = `mvnatural-${CACHE_VERSION}`;
 const urlsToCache = [
   '/',
   '/index.html',
@@ -10,6 +11,7 @@ const urlsToCache = [
 
 // Instalación del Service Worker
 self.addEventListener('install', event => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
@@ -33,6 +35,7 @@ self.addEventListener('activate', event => {
       );
     })
   );
+  self.clients.claim();
 });
 
 // Estrategia: Network First, fallback a Cache
