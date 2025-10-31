@@ -28,8 +28,8 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://res.cloudinary.com">
     
-    <!-- CDN de html2canvas -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+    <!-- CDN de html2canvas (versión actualizada para mejor calidad) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         * {
@@ -764,6 +764,8 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
         }
 
         .quote-header {
@@ -776,6 +778,9 @@
         .quote-logo {
             height: 60px;
             margin-bottom: 15px;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            image-rendering: high-quality;
         }
 
         .quote-header h2 {
@@ -1902,14 +1907,19 @@
             const quotePrintArea = document.getElementById('quotePrintArea');
 
             html2canvas(quotePrintArea, {
-                scale: 2,
+                scale: 3,
                 useCORS: true,
+                allowTaint: true,
                 logging: false,
-                backgroundColor: '#ffffff'
+                backgroundColor: '#ffffff',
+                windowWidth: quotePrintArea.scrollWidth,
+                windowHeight: quotePrintArea.scrollHeight,
+                imageTimeout: 0,
+                removeContainer: true
             }).then(canvas => {
-                const imgData = canvas.toDataURL('image/jpeg', 0.9);
+                const imgData = canvas.toDataURL('image/png', 1.0);
                 const link = document.createElement('a');
-                link.download = 'Cotizacion_MVNatural.jpg';
+                link.download = 'Cotizacion_MVNatural.png';
                 link.href = imgData;
                 link.click();
                 
