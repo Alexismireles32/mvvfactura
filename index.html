@@ -163,7 +163,7 @@
             font-weight: 700;
             cursor: pointer;
             box-shadow: 0 8px 24px rgba(184, 134, 11, 0.45), 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 999;
+            z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -1672,6 +1672,7 @@
             if (cart.length === 0) {
                 cartItemsEl.innerHTML = '<div class="cart-empty">🛒 El carrito está vacío.<br>Agregue productos para continuar.</div>';
                 cartSummaryEl.style.display = 'none';
+                updateFloatingCartButton(0, 0);
                 return;
             }
 
@@ -1715,7 +1716,8 @@
             const badge = document.getElementById('floatingCartBadge');
             const totalEl = document.getElementById('floatingCartTotal');
 
-            if (itemCount > 0) {
+            // Solo mostrar en step1 y si hay items
+            if (itemCount > 0 && currentStep === 1) {
                 badge.textContent = itemCount;
                 totalEl.textContent = formatPrice(total);
                 floatingBtn.classList.remove('hidden');
@@ -1741,6 +1743,18 @@
 
             if (step === 3) {
                 loadSavedCustomerInfo();
+            }
+
+            // Actualizar visibilidad del botón flotante
+            const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+            if (totalQuantity > 0) {
+                const subtotal = cart.reduce((sum, item) => {
+                    const product = products.find(p => p.id === item.id);
+                    return sum + (calculatePrice(product, item.quantity, totalQuantity) * item.quantity);
+                }, 0);
+                const shipping = calculateShipping(totalQuantity);
+                const total = subtotal + shipping;
+                updateFloatingCartButton(totalQuantity, total);
             }
         }
 
