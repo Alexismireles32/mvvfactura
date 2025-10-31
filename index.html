@@ -8,18 +8,18 @@
     <meta name="theme-color" content="#B8860B">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="MV Natural">
+    <meta name="apple-mobile-web-app-title" content="MVV Natural">
     
     <!-- SEO -->
-    <meta name="description" content="Sistema de cotizaciones profesional para productos MV Natural. Crea cotizaciones al instante con precios de mayoreo.">
-    <meta name="keywords" content="MV Natural, cotizaciones, productos naturales, mayoreo">
+    <meta name="description" content="Sistema de cotizaciones profesional para productos MVV Natural. Crea cotizaciones al instante con precios de mayoreo.">
+    <meta name="keywords" content="MVV Natural, cotizaciones, productos naturales, mayoreo">
     
     <!-- Social Media -->
-    <meta property="og:title" content="MV Natural - Cotizaciones">
+    <meta property="og:title" content="MVV Natural - Cotizaciones">
     <meta property="og:description" content="Sistema de cotizaciones profesional">
     <meta property="og:type" content="website">
     
-    <title>MV Natural - Cotizaciones</title>
+    <title>MVV Natural - Cotizaciones</title>
     
     <!-- Manifest para PWA -->
     <link rel="manifest" href="manifest.json">
@@ -144,6 +144,168 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* ============================================
+           BOTÓN FLOTANTE DEL CARRITO
+           ============================================ */
+        .floating-cart-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            left: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--light-gold) 100%);
+            color: white;
+            border: none;
+            padding: 18px 24px;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(184, 134, 11, 0.45), 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .floating-cart-btn:active {
+            transform: translateY(-3px) scale(0.98);
+            box-shadow: 0 12px 32px rgba(184, 134, 11, 0.6), 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .floating-cart-btn.hidden {
+            transform: translateY(120px);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .floating-cart-btn .cart-icon {
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .floating-cart-btn .cart-badge {
+            background: white;
+            color: var(--gold);
+            border-radius: 50%;
+            min-width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 800;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            padding: 0 8px;
+        }
+
+        .floating-cart-btn .cart-total {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .floating-cart-btn .cart-label {
+            font-size: 0.75rem;
+            opacity: 0.95;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .floating-cart-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 3px;
+        }
+
+        /* ============================================
+           CARRITO PÁGINA COMPLETA
+           ============================================ */
+        .cart-full-page {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+
+        .cart-header-logo {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .cart-header-logo .cart-logo {
+            width: 120px;
+            height: auto;
+        }
+
+        .cart-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .cart-actions button {
+            flex: 1;
+            padding: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            touch-action: manipulation;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--gold);
+            border: 2px solid var(--gold) !important;
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.98);
+            background: var(--cream);
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--light-gold) 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
+        }
+
+        .btn-next:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px rgba(184, 134, 11, 0.4);
+        }
+
+        .btn-next:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
         /* Search optimizado para móvil */
         .search-container {
             margin-bottom: 20px;
@@ -208,15 +370,9 @@
             color: var(--gold);
             font-size: 0.95rem;
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 12px;
             line-height: 1.2;
             min-height: 36px;
-        }
-
-        .product-id {
-            color: #666;
-            font-size: 0.75rem;
-            margin-bottom: 12px;
         }
 
         .product-controls {
@@ -811,10 +967,6 @@
                 min-height: 32px;
             }
 
-            .product-id {
-                font-size: 0.7rem;
-            }
-
             .product-price {
                 font-size: 1rem;
             }
@@ -835,6 +987,44 @@
             .btn-add {
                 font-size: 0.85rem;
                 padding: 10px 6px;
+            }
+
+            .floating-cart-btn {
+                bottom: 12px;
+                right: 12px;
+                left: 12px;
+                padding: 14px 20px;
+                font-size: 0.95rem;
+            }
+
+            .floating-cart-btn .cart-icon {
+                font-size: 1.4rem;
+            }
+
+            .floating-cart-btn .cart-badge {
+                min-width: 28px;
+                height: 28px;
+                font-size: 0.85rem;
+            }
+
+            .floating-cart-btn .cart-total {
+                font-size: 1.1rem;
+            }
+
+            .floating-cart-btn .cart-label {
+                font-size: 0.7rem;
+            }
+
+            .cart-full-page {
+                padding: 16px;
+            }
+
+            .cart-actions {
+                flex-direction: column;
+            }
+
+            .cart-actions button {
+                width: 100%;
             }
         }
 
@@ -865,6 +1055,24 @@
                 flex-shrink: 0;
             }
 
+            .cart-full-page {
+                max-width: 900px;
+                padding: 40px;
+            }
+
+            .cart-header-logo .cart-logo {
+                width: 150px;
+            }
+
+            .cart-actions {
+                flex-direction: row;
+            }
+
+            .cart-actions button {
+                padding: 18px 32px;
+                font-size: 1.1rem;
+            }
+
             .products-grid {
                 gap: 20px;
             }
@@ -876,11 +1084,6 @@
             .product-name {
                 font-size: 1.1rem;
                 min-height: auto;
-            }
-
-            .product-id {
-                font-size: 0.85rem;
-                margin-bottom: 15px;
             }
 
             .product-price {
@@ -1016,7 +1219,7 @@
     <!-- Header -->
     <div class="header">
         <div class="header-content">
-            <img src="https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png" alt="MV Natural Logo" class="logo" loading="eager">
+            <img src="https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png" alt="MVV Natural Logo" class="logo" loading="eager">
             <div class="header-title">Sistema de Cotizaciones</div>
         </div>
     </div>
@@ -1030,60 +1233,77 @@
                 <p><strong>Para mayoreo de 10 piezas, pueden ser productos variados. Para mayoreo de 30 piezas o más, deben ser del mismo producto.</strong></p>
             </div>
 
-            <div class="content-wrapper">
-                <div class="products-area">
-                    <h2 class="section-title">Productos MV Natural</h2>
-                    <div class="search-container">
-                        <input type="search" id="searchInput" class="search-box" placeholder="🔍 Buscar productos..." autocomplete="off" inputmode="search">
-                    </div>
-                    <div id="productsGrid" class="products-grid"></div>
+            <h2 class="section-title">Productos MVV Natural por Rita Valencia</h2>
+            <div class="search-container">
+                <input type="search" id="searchInput" class="search-box" placeholder="🔍 Buscar productos..." autocomplete="off" inputmode="search">
+            </div>
+            <div id="productsGrid" class="products-grid" style="padding-bottom: 100px;"></div>
 
-                    <div class="shipping-info">
-                        <h3>🚚 Información importante sobre envíos:</h3>
-                        <p>Si su pedido incluye productos de mayor tamaño como PROTEIN BODY, MAXI FIBRA, GEL TONIC 250 ML o LIDA SHAKE MALTEADA, el precio del envío puede aumentar.</p>
-                        <p>Para zonas extendidas o de difícil acceso, se cobrará un costo adicional de envío. Por favor consulte con Rita Valencia para más detalles.</p>
-                    </div>
+            <div class="shipping-info">
+                <h3>🚚 Información importante sobre envíos:</h3>
+                <p>Si su pedido incluye productos de mayor tamaño como PROTEIN BODY, MAXI FIBRA, GEL TONIC 250 ML o LIDA SHAKE MALTEADA, el precio del envío puede aumentar.</p>
+                <p>Para zonas extendidas o de difícil acceso, se cobrará un costo adicional de envío. Por favor consulte con Rita Valencia para más detalles.</p>
+            </div>
 
-                    <div class="catalog-section">
-                        <h3>📚 Catálogo de Productos</h3>
-                        <p>Descargue nuestro catálogo completo de productos para conocer toda nuestra oferta.</p>
-                        <a href="public/catalogo-mvvNaturalss-24_240923_175642.pdf" class="btn-catalog" download>
-                            📄 Descargar Catálogo PDF
-                        </a>
+            <div class="catalog-section">
+                <h3>📚 Catálogo de Productos</h3>
+                <p>Descargue nuestro catálogo completo de productos para conocer toda nuestra oferta.</p>
+                <a href="public/catalogo-mvvNaturalss-24_240923_175642.pdf" class="btn-catalog" download>
+                    📄 Descargar Catálogo PDF
+                </a>
+            </div>
+
+            <!-- Botón flotante para ver carrito -->
+            <button id="floatingCartBtn" class="floating-cart-btn hidden" onclick="goToCart()" aria-label="Ver carrito">
+                <div class="cart-icon">
+                    🛒 <span class="cart-badge" id="floatingCartBadge">0</span>
+                </div>
+                <div class="floating-cart-info">
+                    <div class="cart-label">Ver Carrito</div>
+                    <div class="cart-total" id="floatingCartTotal">$0</div>
+                </div>
+            </button>
+        </div>
+
+        <!-- STEP 2: Cart Review -->
+        <div id="step2" class="step">
+            <h2 class="section-title">🛒 Tu Carrito</h2>
+            
+            <div class="cart-full-page">
+                <div class="cart-header-logo">
+                    <img src="https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png" alt="Logo" class="cart-logo" loading="lazy">
+                </div>
+                
+                <div id="cartItems" class="cart-items"></div>
+                
+                <div id="cartSummary" class="cart-summary" style="display: none;">
+                    <div class="cart-summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0</span>
+                    </div>
+                    <div class="cart-summary-row">
+                        <span>Envío (Estafeta):</span>
+                        <span id="shipping">$0</span>
+                    </div>
+                    <div class="cart-summary-row cart-total">
+                        <span>Total:</span>
+                        <span id="total">$0</span>
                     </div>
                 </div>
 
-                <div class="cart-section">
-                    <div class="cart-header">
-                        <div class="cart-title">
-                            <img src="https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png" alt="Logo" class="cart-logo" loading="lazy">
-                            🛒 Carrito
-                        </div>
-                    </div>
-                    <div id="cartItems" class="cart-items"></div>
-                    <div id="cartSummary" class="cart-summary" style="display: none;">
-                        <div class="cart-summary-row">
-                            <span>Subtotal:</span>
-                            <span id="subtotal">$0</span>
-                        </div>
-                        <div class="cart-summary-row">
-                            <span>Envío (Estafeta):</span>
-                            <span id="shipping">$0</span>
-                        </div>
-                        <div class="cart-summary-row cart-total">
-                            <span>Total:</span>
-                            <span id="total">$0</span>
-                        </div>
-                    </div>
-                    <button id="btnNextStep" class="btn-next" onclick="goToStep(2)" disabled aria-label="Continuar a información del cliente">
+                <div class="cart-actions">
+                    <button class="btn-secondary" onclick="goToStep(1)" aria-label="Agregar más productos">
+                        ← Agregar más productos
+                    </button>
+                    <button class="btn-next" onclick="goToStep(3)" aria-label="Continuar a información del cliente">
                         Continuar →
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- STEP 2: Customer Information -->
-        <div id="step2" class="step">
+        <!-- STEP 3: Customer Information -->
+        <div id="step3" class="step">
             <h2 class="section-title">📋 Información del Cliente</h2>
             <div class="customer-form">
                 <div class="form-group">
@@ -1164,8 +1384,8 @@
             </div>
         </div>
 
-        <!-- STEP 3: Quote Preview -->
-        <div id="step3" class="step">
+        <!-- STEP 4: Quote Preview -->
+        <div id="step4" class="step">
             <div class="quote-wrapper">
                 <div class="quote-actions-top">
                     <button class="btn-download" onclick="downloadQuoteImage()" aria-label="Guardar imagen">
@@ -1178,7 +1398,7 @@
 
                 <div id="quotePrintArea">
                     <div class="quote-header">
-                        <img src="https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png" alt="MV Natural Logo" class="quote-logo" loading="eager">
+                        <img src="https://res.cloudinary.com/dsulhqvza/image/upload/v1761550208/mvvnatural_pbzwrl.png" alt="MVV Natural Logo" class="quote-logo" loading="eager">
                         <h2>COTIZACIÓN</h2>
                         <div id="quoteDate" class="quote-date"></div>
                     </div>
@@ -1188,7 +1408,6 @@
                     <table class="quote-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Producto</th>
                                 <th>Cant.</th>
                                 <th>P. Unit.</th>
@@ -1226,7 +1445,7 @@
     </div>
 
     <div class="footer">
-        © 2025 MV Natural - Todos los derechos reservados
+        © 2025 MVV Natural - Todos los derechos reservados
     </div>
 
     <script>
@@ -1385,7 +1604,6 @@
                 return `
                     <div class="product-card">
                         <div class="product-name">${product.name}</div>
-                        <div class="product-id">ID: ${product.id}</div>
                         <div class="product-controls">
                             <div class="product-price">${formatPrice(currentPrice)}</div>
                             ${quantity > 0 ? `
@@ -1444,7 +1662,6 @@
         function updateUI() {
             renderProducts();
             renderCart();
-            updateNextButton();
         }
 
         // Renderizar carrito
@@ -1469,7 +1686,7 @@
 
                 return `
                     <div class="cart-item">
-                        <div class="cart-item-name">${product.id} - ${product.name}</div>
+                        <div class="cart-item-name">${product.name}</div>
                         <div class="cart-item-details">
                             <span>${item.quantity} × ${formatPrice(unitPrice)}</span>
                             <span><strong>${formatPrice(itemTotal)}</strong></span>
@@ -1487,6 +1704,24 @@
             document.getElementById('total').textContent = formatPrice(total);
 
             cartSummaryEl.style.display = 'block';
+
+            // Actualizar botón flotante
+            updateFloatingCartButton(totalQuantity, total);
+        }
+
+        // Actualizar botón flotante del carrito
+        function updateFloatingCartButton(itemCount, total) {
+            const floatingBtn = document.getElementById('floatingCartBtn');
+            const badge = document.getElementById('floatingCartBadge');
+            const totalEl = document.getElementById('floatingCartTotal');
+
+            if (itemCount > 0) {
+                badge.textContent = itemCount;
+                totalEl.textContent = formatPrice(total);
+                floatingBtn.classList.remove('hidden');
+            } else {
+                floatingBtn.classList.add('hidden');
+            }
         }
 
         // Eliminar del carrito
@@ -1494,11 +1729,6 @@
             vibrate(20);
             cart = cart.filter(item => item.id !== productId);
             updateUI();
-        }
-
-        // Actualizar botón siguiente
-        function updateNextButton() {
-            document.getElementById('btnNextStep').disabled = cart.length === 0;
         }
 
         // Cambiar de paso
@@ -1509,9 +1739,18 @@
             currentStep = step;
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            if (step === 2) {
+            if (step === 3) {
                 loadSavedCustomerInfo();
             }
+        }
+
+        // Ir al carrito (función especial para el botón flotante)
+        function goToCart() {
+            if (cart.length === 0) {
+                alert('⚠️ Tu carrito está vacío. Agrega productos primero.');
+                return;
+            }
+            goToStep(2);
         }
 
         // Cargar info guardada
@@ -1607,7 +1846,6 @@
 
                 return `
                     <tr>
-                        <td>${item.id}</td>
                         <td>${product.name}</td>
                         <td>${item.quantity}</td>
                         <td>${formatPrice(unitPrice)}</td>
@@ -1625,7 +1863,7 @@
             document.getElementById('quoteShipping').textContent = formatPrice(shipping);
             document.getElementById('quoteTotal').textContent = formatPrice(total);
 
-            goToStep(3);
+            goToStep(4);
         }
 
         // Descargar imagen
