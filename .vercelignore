@@ -1,7 +1,0 @@
-# No ignorar nada importante
-!index.html
-!manifest.json
-!sw.js
-!vercel.json
-!public/
-
