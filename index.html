@@ -154,8 +154,8 @@
             background: #2C2C2C;
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 24px;
+            padding: 14px 22px;
+            border-radius: 28px;
             font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
@@ -163,11 +163,13 @@
             z-index: 9999;
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: center;
+            gap: 14px;
             transition: all 0.2s ease;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
             letter-spacing: 0.3px;
+            min-height: 56px;
         }
 
         .floating-cart-btn:hover {
@@ -187,50 +189,54 @@
         }
 
         .floating-cart-btn .cart-icon {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             display: flex;
             align-items: center;
-            opacity: 0.9;
+            justify-content: center;
+            gap: 6px;
+            opacity: 0.95;
         }
 
         .floating-cart-btn .cart-badge {
             background: white;
             color: #2C2C2C;
             border-radius: 50%;
-            min-width: 22px;
-            height: 22px;
+            min-width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 0.75rem;
             font-weight: 700;
-            margin-left: -4px;
             padding: 0 6px;
         }
 
-        .floating-cart-btn .cart-total {
-            font-size: 1rem;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-
         .floating-cart-btn .cart-action-text {
-            font-size: 0.8rem;
-            opacity: 0.85;
-            font-weight: 400;
+            font-size: 0.85rem;
+            opacity: 0.9;
+            font-weight: 500;
             white-space: nowrap;
+            line-height: 1;
         }
 
         .floating-cart-info {
             display: flex;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            gap: 8px;
         }
 
         .floating-cart-info::before {
             content: '•';
-            opacity: 0.4;
-            font-size: 0.7rem;
+            opacity: 0.5;
+            font-size: 0.8rem;
+        }
+
+        .floating-cart-btn .cart-total {
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            line-height: 1;
         }
 
         /* ============================================
@@ -991,28 +997,34 @@
             .floating-cart-btn {
                 bottom: 16px;
                 right: 16px;
-                padding: 10px 16px;
+                padding: 12px 18px;
                 font-size: 0.85rem;
-                border-radius: 20px;
-                gap: 8px;
+                border-radius: 24px;
+                gap: 12px;
+                min-height: 48px;
             }
 
             .floating-cart-btn .cart-icon {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
+                gap: 5px;
             }
 
             .floating-cart-btn .cart-badge {
-                min-width: 20px;
-                height: 20px;
+                min-width: 22px;
+                height: 22px;
                 font-size: 0.7rem;
             }
 
             .floating-cart-btn .cart-action-text {
-                font-size: 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            .floating-cart-info {
+                gap: 6px;
             }
 
             .floating-cart-btn .cart-total {
-                font-size: 0.9rem;
+                font-size: 0.95rem;
             }
 
             .cart-full-page {
